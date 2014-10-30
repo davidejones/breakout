@@ -11,6 +11,6 @@ public:
 	GameWindow();
 
 	void render();
-	void update();
+	void update(float dt);
 	void terminate();
 };
