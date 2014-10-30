@@ -85,7 +85,7 @@ set(INCLUDE_PATH ${INCUDE_PATH}
 
 # Add a target executable
 add_executable(${PROJ_NAME}
-  main.cpp
+  main.cpp GameWindow.cpp
 )
 
 

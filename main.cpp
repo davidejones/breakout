@@ -1,39 +1,26 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include "GameWindow.h"
 
 using namespace std;
 
+GameWindow *gameWindow;
+
 int main(void)
 {
-    GLFWwindow* window;
+    gameWindow = new GameWindow();
 
-    /* Initialize the library */
-    if (!glfwInit())
-        return -1;
-
-    /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
-    if (!window)
-    {
-        glfwTerminate();
-        return -1;
-    }
-
-    /* Make the window's context current */
-    glfwMakeContextCurrent(window);
+    cout << "game running.." << endl;
 
     /* Loop until the user closes the window */
-    while (!glfwWindowShouldClose(window))
+    while (!gameWindow->windowShouldClose())
     {
-        /* Render here */
-
-        /* Swap front and back buffers */
-        glfwSwapBuffers(window);
-
-        /* Poll for and process events */
-        glfwPollEvents();
+        gameWindow->render();
+        gameWindow->update();
     }
 
-    glfwTerminate();
+    gameWindow->terminate();
+    delete gameWindow;
+    
     return 0;
 }
