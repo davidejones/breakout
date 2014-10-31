@@ -3,6 +3,8 @@
 
 class Paddle
 {
+private:
+	float posX;
 public:
 	Paddle();
 	void render();
