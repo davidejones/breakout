@@ -76,7 +76,7 @@ void Ball::filledCircle()
 {
 	float x1,y1,x2,y2;
 	float angle;
-	double radius=0.05;
+	double radius=0.025;
 
 	x1=0,y1=0;
 	glColor3f(0.0,0.0,1.0);

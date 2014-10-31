@@ -3,15 +3,16 @@
 Paddle::Paddle()
 {
 	posX = 0;
+	posY = -1;
 }
 
 void Paddle::render()
 {
-	float w = 0.5f;
-	float h = 0.1f;
+	float w = 0.4f;
+	float h = 0.05f;
 
 	glPushMatrix();
-	glTranslatef(posX,0,0);
+	glTranslatef(posX,posY,0);
 
 	glBegin(GL_QUADS);
 		glColor3f(1.f, 0.f, 0.f);
@@ -34,10 +35,16 @@ void Paddle::update(float dt)
 
 void Paddle::moveLeft()
 {
-	posX -= 0.2;
+	if(posX*600 > -600)
+	{
+		posX -= 0.2;
+	}
 }
 
 void Paddle::moveRight()
 {
-	posX += 0.2;
+	if(posX*600 < 600 - 0.4*600)
+	{
+		posX += 0.2;
+	}
 }

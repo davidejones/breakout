@@ -1,15 +1,10 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
-class Paddle
+class Brick
 {
-private:
-	float posX;
-	float posY;
 public:
-	Paddle();
+	Brick();
 	void render();
 	void update(float dt);
-	void moveLeft();
-	void moveRight();
 };

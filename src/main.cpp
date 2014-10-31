@@ -4,6 +4,7 @@
 #include "Triangle.h"
 #include "Ball.h"
 #include "Paddle.h"
+#include "Brick.h"
 
 void render();
 void update(float dt);
@@ -16,6 +17,7 @@ float lastFrame = 0.0f;
 Triangle *triangle;
 Ball *ball;
 Paddle *paddle;
+Brick *brick;
 
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -40,6 +42,7 @@ int main(void)
 	triangle = new Triangle();
 	ball = new Ball();
 	paddle = new Paddle();
+	brick = new Brick();
 
 	gameWindow->setKeyCallback(key_callback);
 
@@ -67,6 +70,7 @@ void render()
 	//triangle->render();
 	ball->render();
 	paddle->render();
+	brick->render();
 	gameWindow->render();
 }
 
@@ -75,5 +79,6 @@ void update(float dt)
 	//triangle->update(dt);
 	ball->update(dt);
 	paddle->update(dt);
+	brick->update(dt);
 	gameWindow->update(dt);
 }
