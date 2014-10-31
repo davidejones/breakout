@@ -28,26 +28,28 @@ void Ball::update(float dt)
 	//std::cout << x << std::endl;
 	//std::cout << y << std::endl;
 
+	double ballhalfsize = 0.025 * 600;
+
 	//if ball hits right side
-	if(x >= 600)
+	if(x >= 600 - ballhalfsize)
 	{
 		ballXSpeed *= -1;
 	}
 
 	//if ball hits left side
-	if(x <= -600)
+	if(x <= -600 + ballhalfsize)
 	{
 		ballXSpeed *= -1;
 	}
 
 	//if ball hits the bottom
-	if(y >= 600)
+	if(y >= 600 - ballhalfsize)
 	{
 		ballYSpeed *= -1;
 	}
 
 	//if ball hits the top
-	if(y <= -600)
+	if(y <= -600 + ballhalfsize)
 	{
 		ballYSpeed *= -1;
 	}

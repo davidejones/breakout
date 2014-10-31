@@ -30,6 +30,11 @@ bool GameWindow::windowShouldClose()
 	return glfwWindowShouldClose(_window);
 }
 
+void GameWindow::setKeyCallback(GLFWkeyfun key_callback)
+{
+	glfwSetKeyCallback(_window, key_callback);
+}
+
 void GameWindow::render()
 {
 	glfwSwapBuffers(_window);

@@ -8,6 +8,7 @@ private:
 	float _ratio;
 public:
 	bool windowShouldClose();
+	void setKeyCallback(GLFWkeyfun key_callback);
 
 	GameWindow();
 
