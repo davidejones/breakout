@@ -5,6 +5,7 @@ class GameWindow
 {
 private:
 	GLFWwindow* _window;
+	float _ratio;
 public:
 	bool windowShouldClose();
 
@@ -13,4 +14,5 @@ public:
 	void render();
 	void update(float dt);
 	void terminate();
+	void clear();
 };

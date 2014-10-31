@@ -3,6 +3,8 @@
 
 class Triangle
 {
+private:
+	float Rot;
 public:
 	Triangle();
 	void render();

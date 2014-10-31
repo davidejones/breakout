@@ -2,41 +2,54 @@
 #include <iostream>
 #include "GameWindow.h"
 #include "Triangle.h"
+#include "Ball.h"
+
+void render();
+void update(float dt);
 
 using namespace std;
 
 GameWindow *gameWindow;
-
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
-
 Triangle *triangle;
+Ball *ball;
 
 int main(void)
-{  
-    gameWindow = new GameWindow();
-    triangle = new Triangle();
+{
+	gameWindow = new GameWindow();
+	triangle = new Triangle();
+	ball = new Ball();
 
-    cout << "game running.." << endl;
+	/* Loop until the user closes the window */
+	while (!gameWindow->windowShouldClose())
+	{
+		// Set frame time
+		float currentFrame = glfwGetTime();
+		deltaTime = currentFrame - lastFrame;
+		lastFrame = currentFrame;
 
-    /* Loop until the user closes the window */
-    while (!gameWindow->windowShouldClose())
-    {
-        // Set frame time
-        float currentFrame = glfwGetTime();
-        deltaTime = currentFrame - lastFrame;
-        lastFrame = currentFrame;
+		update(deltaTime);
+		render();
+	}
 
-        triangle->render();
+	gameWindow->terminate();
+	delete gameWindow;
+	
+	return 0;
+}
 
-        gameWindow->render();
-        gameWindow->update(deltaTime);
-    }
+void render()
+{
+	gameWindow->clear();
+	//triangle->render();
+	ball->render();
+	gameWindow->render();
+}
 
-    gameWindow->terminate();
-    delete gameWindow;
-
-    cout << "game ended.." << endl;
-    
-    return 0;
+void update(float dt)
+{
+	//triangle->update(dt);
+	ball->update(dt);
+	gameWindow->update(dt);
 }
