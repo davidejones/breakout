@@ -8,6 +8,7 @@
 
 void render();
 void update(float dt);
+void checkCollisions();
 
 using namespace std;
 
@@ -41,8 +42,8 @@ int main(void)
 	gameWindow = new GameWindow();
 	triangle = new Triangle();
 	ball = new Ball();
-	paddle = new Paddle();
-	brick = new Brick();
+	paddle = new Paddle(90,10);
+	brick = new Brick(100,10);
 
 	gameWindow->setKeyCallback(key_callback);
 
@@ -53,6 +54,8 @@ int main(void)
 		float currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
+
+		gameWindow->projection();
 
 		update(deltaTime);
 		render();
@@ -67,7 +70,7 @@ int main(void)
 void render()
 {
 	gameWindow->clear();
-	//triangle->render();
+	triangle->render();
 	ball->render();
 	paddle->render();
 	brick->render();
@@ -76,9 +79,24 @@ void render()
 
 void update(float dt)
 {
-	//triangle->update(dt);
+	checkCollisions();
+	triangle->update(dt);
 	ball->update(dt);
 	paddle->update(dt);
 	brick->update(dt);
 	gameWindow->update(dt);
+}
+
+void checkCollisions()
+{
+	/*
+		if we have some level with an array of bricks
+		we would loop over each brick and check ball bounds in relation to brick bounds
+		if there is overlap then collision has occoured and trigger event on brick
+		e.g destroyed fade out, or perhaps some bricks take 2 or 3 collisions before destruction etc.
+	*/
+	if(ball->bounds->checkIntersect(*brick->bounds))
+	{
+		brick->collision();
+	}
 }

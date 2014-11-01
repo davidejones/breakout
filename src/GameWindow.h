@@ -6,9 +6,11 @@ class GameWindow
 private:
 	GLFWwindow* _window;
 	float _ratio;
+	int width, height;
 public:
 	bool windowShouldClose();
 	void setKeyCallback(GLFWkeyfun key_callback);
+	void projection();
 
 	GameWindow();
 

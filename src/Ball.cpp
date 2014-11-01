@@ -2,20 +2,26 @@
 
 Ball::Ball()
 {
-    ballXSpeed = 10;
-    ballYSpeed = 10;
+    ballXSpeed = 5;
+    ballYSpeed = 5;
     x = 0;
     y = 0;
     angle = 0;
+
+    //starting ball position center of window
+    x = 600 * 0.5;
+    y = 600 * 0.5;
+
+    bounds = new BoundingBox(x, 10, y, 10);
 }
 
 void Ball::render()
 {
 	//drawCircle(0.5, 0.5, 0.2, 20);
 	glPushMatrix();
-    glRotatef(angle, 0, 0.5, 1);
+    //glRotatef(angle, 0, 0.5, 1);
     //glTranslatef(x, y, 0);
-    glTranslated(x/600, y/600, 0);
+    glTranslated(x, y, 0);
 	filledCircle();
 	glPopMatrix();
 }
@@ -28,31 +34,35 @@ void Ball::update(float dt)
 	//std::cout << x << std::endl;
 	//std::cout << y << std::endl;
 
-	double ballhalfsize = 0.025 * 600;
-
 	//if ball hits right side
-	if(x >= 600 - ballhalfsize)
+	if(x >= 600)
 	{
 		ballXSpeed *= -1;
 	}
 
 	//if ball hits left side
-	if(x <= -600 + ballhalfsize)
+	if(x <= 0)
 	{
 		ballXSpeed *= -1;
 	}
 
 	//if ball hits the bottom
-	if(y >= 600 - ballhalfsize)
+	if(y >= 600)
 	{
 		ballYSpeed *= -1;
 	}
 
 	//if ball hits the top
-	if(y <= -600 + ballhalfsize)
+	if(y <= 0)
 	{
 		ballYSpeed *= -1;
 	}
+
+	//update bounding box
+	bounds->minX = x;
+	bounds->maxX = x + 10;
+	bounds->minY = y;
+	bounds->maxY = y + 10;
 }
 
 void Ball::drawCircle(float cx, float cy, float r, int num_segments)
@@ -76,7 +86,7 @@ void Ball::filledCircle()
 {
 	float x1,y1,x2,y2;
 	float angle;
-	double radius=0.025;
+	double radius=10;
 
 	x1=0,y1=0;
 	glColor3f(0.0,0.0,1.0);

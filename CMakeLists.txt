@@ -85,7 +85,7 @@ set(INCLUDE_PATH ${INCUDE_PATH}
 
 # Add a target executable
 add_executable(${PROJ_NAME}
-  src/main.cpp src/GameWindow.cpp src/Triangle.cpp src/Ball.cpp src/Paddle.cpp src/Brick.cpp
+  src/main.cpp src/GameWindow.cpp src/Triangle.cpp src/Ball.cpp src/Paddle.cpp src/Brick.cpp src/BoundingBox.cpp
 )
 
 

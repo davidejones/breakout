@@ -12,17 +12,25 @@ GameWindow::GameWindow()
         glfwTerminate();
     }
 
-    _ratio = 600 / 600;
-
-    glViewport(0, 0, 600, 600);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0.0f, 600, 600, 0.0f, -1.0f, 1.0f);
-	glMatrixMode(GL_MODELVIEW); 
-	glLoadIdentity();
-
     /* Make the window's context current */
 	glfwMakeContextCurrent(_window);
+}
+
+void GameWindow::projection()
+{
+	glfwGetFramebufferSize(_window, &width, &height);
+	_ratio = width / (float) height;
+	
+	glViewport(0, 0, width, height);
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	//glOrtho(0.0, 600, 600, 0.0, -1.0, 1.0);
+	glOrtho(0.0, width, height, 0.0, -1.0, 1.0);
+	//glOrtho(-_ratio, _ratio, -1.f, 1.f, 1.f, -1.f);
+	glMatrixMode(GL_MODELVIEW); 
+	glLoadIdentity();
 }
 
 bool GameWindow::windowShouldClose() 
@@ -38,7 +46,6 @@ void GameWindow::setKeyCallback(GLFWkeyfun key_callback)
 void GameWindow::render()
 {
 	glfwSwapBuffers(_window);
-	/* Poll for and process events */
     glfwPollEvents();
 }
 
