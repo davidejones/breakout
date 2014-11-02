@@ -17,4 +17,6 @@ public:
 	Ball();
 	void render();
 	void update(float dt);
+	void brickCollision();
+	void paddleCollision();
 };

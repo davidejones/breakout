@@ -4,15 +4,15 @@ Paddle::Paddle(int w, int h)
 {
 	width = w;
 	height = h;
-	bounds = new BoundingBox(0, w, 0, h);
-	posX = 300;
-	posY = 600 - h;
+	x = 300;
+	y = 600 - h;
+	bounds = new BoundingBox(x, x + width, y, y + height);
 }
 
 void Paddle::render()
 {
 	glPushMatrix();
-	glTranslatef(posX,posY,0);
+	glTranslatef(x,y,0);
 
 	glBegin(GL_QUADS);
 		glColor3f(1.f, 0.f, 0.f);
@@ -30,21 +30,25 @@ void Paddle::render()
 
 void Paddle::update(float dt)
 {
-	
+
 }
 
 void Paddle::moveLeft()
 {
-	if(posX > 0)
+	if(x > 0)
 	{
-		posX -= 10;
+		x -= 10;
+		bounds->minX = x;
+		bounds->maxX = x + width;
 	}
 }
 
 void Paddle::moveRight()
 {
-	if(posX < 600 - 90)
+	if(x < 600 - width)
 	{
-		posX += 10;
+		x += 10;
+		bounds->minX = x;
+		bounds->maxX = x + width;
 	}
 }

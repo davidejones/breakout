@@ -49,7 +49,14 @@ void Ball::update(float dt)
 	//if ball hits the bottom
 	if(y >= 600)
 	{
-		ballYSpeed *= -1;
+		//ballYSpeed *= -1;
+		std::cout << "Life Lost.." << std::endl;
+
+		//reset variables and ballpos
+		ballXSpeed = 5;
+    	ballYSpeed = 5;
+		x = 600 * 0.5;
+    	y = 600 * 0.5;
 	}
 
 	//if ball hits the top
@@ -103,3 +110,31 @@ void Ball::filledCircle()
 
 	glEnd();
 } 
+
+void Ball::paddleCollision()
+{
+	//collision with paddle inverse
+	//If the ball hits the paddle from the top, negate Y velocity.
+	//If the ball hits the paddle from the side, negate X velocity.
+
+	//for the time being lets just bounce on the Y as X is less likely to be a hit
+
+	if(ballXSpeed >= 0) {
+		ballXSpeed += 1;
+	} else {
+		ballXSpeed -= 1;
+	}
+	if(ballYSpeed >= 0) {
+		ballYSpeed += 1;
+	} else {
+		ballYSpeed -= 1;
+	}
+
+	ballYSpeed *= -1;
+}
+
+void Ball::brickCollision()
+{
+	ballYSpeed *= -1;
+	//ballXSpeed *= -1;
+}

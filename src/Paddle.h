@@ -5,9 +5,8 @@
 class Paddle
 {
 private:
-	float posX;
-	float posY;
 	int width, height;
+	int x, y;
 public:
 	BoundingBox *bounds;
 	Paddle(int w, int h);
