@@ -7,6 +7,9 @@ class Paddle
 private:
 	int width, height;
 	int x, y;
+	int maxspeed, dx, dy;
+	int vel;
+	bool left, right;
 public:
 	BoundingBox *bounds;
 	Paddle(int w, int h);
@@ -14,4 +17,5 @@ public:
 	void update(float dt);
 	void moveLeft();
 	void moveRight();
+	void moveStop();
 };

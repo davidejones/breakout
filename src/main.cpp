@@ -15,9 +15,9 @@ using namespace std;
 GameWindow *gameWindow;
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
-Triangle *triangle;
-Ball *ball;
-Paddle *paddle;
+Triangle triangle;
+Ball ball;
+Paddle paddle(90,10);
 //Brick *brick;
 int Level1[5][10] = {
 	{1,1,1,1,1,1,1,1,1,1},
@@ -36,21 +36,26 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
     if(key == GLFW_KEY_A || key == GLFW_KEY_LEFT)
     {
     	//left
-    	paddle->moveLeft();
+    	paddle.moveLeft();
     }
     if(key == GLFW_KEY_D || key == GLFW_KEY_RIGHT)
     {
     	//right
-    	paddle->moveRight();
+    	paddle.moveRight();
+    }
+
+    if(action == GLFW_RELEASE) 
+    {
+    	paddle.moveStop();
     }
 }
 
 int main(void)
 {
 	gameWindow = new GameWindow();
-	triangle = new Triangle();
-	ball = new Ball();
-	paddle = new Paddle(90,10);
+	//triangle = new Triangle();
+	//ball = new Ball();
+	//paddle = new Paddle(90,10);
 	//brick = new Brick(100,10);
 
 	//create bricks
@@ -64,7 +69,7 @@ int main(void)
 		if(i == 4) col = 0xFFFF00;
 		for (int j = 0; j < 10; ++j)
 		{
-			bricks[i][j] = new Brick(100,10,105 * i, 15 * j, col);
+			bricks[i][j] = new Brick(80,20,85 * i, 25 * j, col);
 		}
 	}
 
@@ -93,9 +98,9 @@ int main(void)
 void render()
 {
 	gameWindow->clear();
-	triangle->render();
-	ball->render();
-	paddle->render();
+	triangle.render();
+	ball.render();
+	paddle.render();
 	
 	//brick->render();
 	for (int i = 0; i < 5; ++i)
@@ -112,9 +117,9 @@ void render()
 void update(float dt)
 {
 	checkCollisions();
-	triangle->update(dt);
-	ball->update(dt);
-	paddle->update(dt);
+	triangle.update(dt);
+	ball.update(dt);
+	paddle.update(dt);
 	
 	//brick->update(dt);
 	for (int i = 0; i < 5; ++i)
@@ -150,9 +155,9 @@ void checkCollisions()
 		{
 			if(bricks[i][j]->visible)
 			{
-				if(ball->bounds->checkIntersect(*bricks[i][j]->bounds))
+				if(ball.bounds->checkIntersect(*bricks[i][j]->bounds))
 				{
-					ball->brickCollision();
+					ball.brickCollision();
 					bricks[i][j]->collision();
 				}
 			}
@@ -160,8 +165,8 @@ void checkCollisions()
 	}
 
 	//if ball hit paddle then we need to adjust ball trajectory
-	if(ball->bounds->checkIntersect(*paddle->bounds))
+	if(ball.bounds->checkIntersect(*paddle.bounds))
 	{
-		ball->paddleCollision();
+		ball.paddleCollision();
 	}
 }

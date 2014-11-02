@@ -5,6 +5,12 @@ GameWindow::GameWindow()
     /* Initialize the library */
     glfwInit();
 
+    /*
+    //get monitory size and create window to that
+    const GLFWvidmode * mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+    _window = glfwCreateWindow(mode->width, mode->height, "Breakout", NULL, NULL);
+    */
+
     /* Create a windowed mode window and its OpenGL context */
     _window = glfwCreateWindow(600, 600, "Breakout", NULL, NULL);
     if (!_window)
