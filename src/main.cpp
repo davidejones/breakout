@@ -19,14 +19,14 @@ Triangle triangle;
 Ball ball;
 Paddle paddle(90,10);
 //Brick *brick;
-int Level1[5][10] = {
-	{1,1,1,1,1,1,1,1,1,1},
-	{1,1,1,1,1,1,1,1,1,1},
-	{1,1,1,1,1,1,1,1,1,1},
-	{1,1,1,1,1,1,1,1,1,1},
-	{1,1,1,1,1,1,1,1,1,1}
+int Level1[5][7] = {
+	{1,1,1,1,1,1,1},
+	{1,1,1,1,1,1,1},
+	{1,1,1,1,1,1,1},
+	{1,1,1,1,1,1,1},
+	{1,1,1,1,1,1,1}
 };
-Brick *bricks[5][10];
+Brick *bricks[5][7];
 
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -67,9 +67,9 @@ int main(void)
 		if(i == 2) col = 0x0000FF;
 		if(i == 3) col = 0xFF00FF;
 		if(i == 4) col = 0xFFFF00;
-		for (int j = 0; j < 10; ++j)
+		for (int j = 0; j < 7; ++j)
 		{
-			bricks[i][j] = new Brick(80,20,85 * i, 25 * j, col);
+			bricks[i][j] = new Brick(80,20,85 * j, 25 * i, col);
 		}
 	}
 
@@ -105,7 +105,7 @@ void render()
 	//brick->render();
 	for (int i = 0; i < 5; ++i)
 	{
-		for (int j = 0; j < 10; ++j)
+		for (int j = 0; j < 7; ++j)
 		{
 			bricks[i][j]->render();
 		}
@@ -124,7 +124,7 @@ void update(float dt)
 	//brick->update(dt);
 	for (int i = 0; i < 5; ++i)
 	{
-		for (int j = 0; j < 10; ++j)
+		for (int j = 0; j < 7; ++j)
 		{
 			bricks[i][j]->update(dt);
 		}
@@ -151,7 +151,7 @@ void checkCollisions()
 	*/
 	for (int i = 0; i < 5; ++i)
 	{
-		for (int j = 0; j < 10; ++j)
+		for (int j = 0; j < 7; ++j)
 		{
 			if(bricks[i][j]->visible)
 			{
@@ -166,7 +166,7 @@ void checkCollisions()
 
 	//if ball hit paddle then we need to adjust ball trajectory
 	if(ball.bounds->checkIntersect(*paddle.bounds))
-	{
-		ball.paddleCollision();
+	{		
+		ball.paddleCollision(paddle);
 	}
 }

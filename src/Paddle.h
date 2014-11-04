@@ -1,3 +1,6 @@
+#ifndef PADDLE_H
+#define PADDLE_H
+
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include "BoundingBox.h"
@@ -19,3 +22,5 @@ public:
 	void moveRight();
 	void moveStop();
 };
+
+#endif

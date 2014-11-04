@@ -2,74 +2,64 @@
 
 Ball::Ball()
 {
-    ballXSpeed = 5;
-    ballYSpeed = 5;
-    x = 0;
-    y = 0;
-    angle = 0;
-
-    //starting ball position center of window
-    x = 600 * 0.5;
-    y = 600 * 0.5;
-
-    bounds = new BoundingBox(x, 10, y, 10);
+	speedIncrement = 50;
+	maxSpeed = 1000;
+	direction.X = 1;
+	direction.Y = 1;
+	position.X = 600 * 0.5;
+	position.Y = 600 * 0.5;
+	speed = 250;
+    bounds = new BoundingBox(position.X, 10, position.Y, 10);
 }
 
 void Ball::render()
 {
-	//drawCircle(0.5, 0.5, 0.2, 20);
 	glPushMatrix();
-    //glRotatef(angle, 0, 0.5, 1);
-    //glTranslatef(x, y, 0);
-    glTranslated(x, y, 0);
+	glTranslated(position.X, position.Y, 0);
 	filledCircle();
 	glPopMatrix();
 }
 
 void Ball::update(float dt)
 {
-	x = x + ballXSpeed;
-	y = y + ballYSpeed;
-
-	//std::cout << x << std::endl;
-	//std::cout << y << std::endl;
+	position.X = position.X + direction.X * (speed * dt);
+	position.Y = position.Y + direction.Y * (speed * dt);
 
 	//if ball hits right side
-	if(x >= 600)
+	if(position.X >= 600)
 	{
-		ballXSpeed *= -1;
+		direction.X *= -1;
 	}
 
 	//if ball hits left side
-	if(x <= 0)
+	if(position.X <= 0)
 	{
-		ballXSpeed *= -1;
+		direction.X *= -1;
 	}
 
 	//if ball hits the bottom
-	if(y >= 600)
+	if(position.Y >= 600)
 	{
 		//ballYSpeed *= -1;
 		std::cout << "Life Lost.." << std::endl;
 
 		//reset variables and ballpos
-		ballXSpeed = 5;
-    	ballYSpeed = 5;
-		x = 600 * 0.5;
-    	y = 600 * 0.5;
+		speed = 250;
+		position.X = 600 * 0.5;
+    	position.Y = 600 * 0.5;
 	}
 
 	//if ball hits the top
-	if(y <= 0)
+	if(position.Y <= 0)
 	{
-		ballYSpeed *= -1;
+		direction.Y *= -1;
 	}
 
 	//update bounding box
-	bounds->minX = x;
-	bounds->maxX = x + 10;
-	bounds->minY = y;
-	bounds->maxY = y + 10;
+	bounds->minX = position.X;
+	bounds->maxX = position.X + 10;
+	bounds->minY = position.Y;
+	bounds->maxY = position.Y + 10;
 }
 
 void Ball::drawCircle(float cx, float cy, float r, int num_segments)
@@ -111,30 +101,21 @@ void Ball::filledCircle()
 	glEnd();
 } 
 
-void Ball::paddleCollision()
+void Ball::paddleCollision(Paddle paddle)
 {
-	//collision with paddle inverse
-	//If the ball hits the paddle from the top, negate Y velocity.
-	//If the ball hits the paddle from the side, negate X velocity.
+	direction.Y = -direction.Y;
+    position.Y = paddle.bounds->minY - 10;
 
-	//for the time being lets just bounce on the Y as X is less likely to be a hit
+    //direction.X = ((float)Bounds.Center.X - paddle.Bounds.Center.X) / (paddle.Bounds.Width / 2);
+    direction.X = ( position.X + 10 - (paddle.bounds->minX + (90/2)) ) / (90/2);   
+    direction = direction.Normalize();
 
-	if(ballXSpeed >= 0) {
-		ballXSpeed += 1;
-	} else {
-		ballXSpeed -= 1;
-	}
-	if(ballYSpeed >= 0) {
-		ballYSpeed += 1;
-	} else {
-		ballYSpeed -= 1;
-	}
-
-	ballYSpeed *= -1;
+    // Increase the speed when the ball is hit
+    speed += speedIncrement;
+    speed = fmin(speed, maxSpeed);
 }
 
 void Ball::brickCollision()
 {
-	ballYSpeed *= -1;
-	//ballXSpeed *= -1;
+	direction.Y = -direction.Y;
 }
