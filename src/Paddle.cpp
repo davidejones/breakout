@@ -1,5 +1,7 @@
 #include "Paddle.h"
 
+using namespace std;
+
 Paddle::Paddle(int w, int h)
 {
 	maxspeed = 10;
@@ -10,7 +12,10 @@ Paddle::Paddle(int w, int h)
 	height = h;
 	x = 300;
 	y = 600 - h;
-	bounds = new BoundingBox(x, x + width, y, y + height);
+	bounds.minX = x;
+	bounds.maxX = x + width;
+	bounds.minY = y;
+	bounds.maxY = y + height;
 }
 
 void Paddle::render()
@@ -43,8 +48,8 @@ void Paddle::update(float dt)
 				vel = maxspeed;
 			}
 			x -= vel;
-			bounds->minX = x;
-			bounds->maxX = x + width;
+			bounds.minX = x;
+			bounds.maxX = x + width;
 		}
 	} else if(right) {
 		if(x < 600 - width)
@@ -55,46 +60,20 @@ void Paddle::update(float dt)
 			}
 
 			x += vel;
-			bounds->minX = x;
-			bounds->maxX = x + width;
+			bounds.minX = x;
+			bounds.maxX = x + width;
 		}
 	}	
 }
 
 void Paddle::moveLeft()
 {
-	/*
-	if(x > 0)
-	{
-		vel += 5;
-		if(vel >= maxspeed) {
-			vel = maxspeed;
-		}
-
-		x -= vel;
-		bounds->minX = x;
-		bounds->maxX = x + width;
-	}
-	*/
 	left = true;
 	right = false;
 }
 
 void Paddle::moveRight()
 {
-	/*
-	if(x < 600 - width)
-	{
-		vel += 5;
-		if(vel >= maxspeed) {
-			vel = maxspeed;
-		}
-
-		x += vel;
-		bounds->minX = x;
-		bounds->maxX = x + width;
-	}
-	*/
 	left = false;
 	right = true;
 }
@@ -103,4 +82,12 @@ void Paddle::moveStop()
 {
 	left = false;
 	right = false;
+}
+
+void Paddle::checkCollisions(Ball &ball)
+{
+	if(ball.bounds.checkIntersect(bounds))
+	{
+		ball.doPaddleCollision(bounds);
+	}
 }

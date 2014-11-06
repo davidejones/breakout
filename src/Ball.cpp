@@ -1,5 +1,7 @@
 #include "Ball.h"
 
+using namespace std;
+
 Ball::Ball()
 {
 	speedIncrement = 50;
@@ -8,8 +10,11 @@ Ball::Ball()
 	direction.Y = 1;
 	position.X = 600 * 0.5;
 	position.Y = 600 * 0.5;
-	speed = 250;
-    bounds = new BoundingBox(position.X, 10, position.Y, 10);
+	speed = 300;
+    bounds.minX = position.X;
+    bounds.maxX = 10;
+    bounds.minY = position.Y;
+    bounds.maxY = 10;
 }
 
 void Ball::render()
@@ -40,8 +45,7 @@ void Ball::update(float dt)
 	//if ball hits the bottom
 	if(position.Y >= 600)
 	{
-		//ballYSpeed *= -1;
-		std::cout << "Life Lost.." << std::endl;
+		cout << "Life Lost.." << endl;
 
 		//reset variables and ballpos
 		speed = 250;
@@ -56,10 +60,10 @@ void Ball::update(float dt)
 	}
 
 	//update bounding box
-	bounds->minX = position.X;
-	bounds->maxX = position.X + 10;
-	bounds->minY = position.Y;
-	bounds->maxY = position.Y + 10;
+	bounds.minX = position.X;
+	bounds.maxX = position.X + 10;
+	bounds.minY = position.Y;
+	bounds.maxY = position.Y + 10;
 }
 
 void Ball::drawCircle(float cx, float cy, float r, int num_segments)
@@ -101,21 +105,28 @@ void Ball::filledCircle()
 	glEnd();
 } 
 
-void Ball::paddleCollision(Paddle paddle)
+
+void Ball::doPaddleCollision(BoundingBox paddlebounds)
 {
 	direction.Y = -direction.Y;
-    position.Y = paddle.bounds->minY - 10;
+    position.Y = paddlebounds.minY - 10;
 
     //direction.X = ((float)Bounds.Center.X - paddle.Bounds.Center.X) / (paddle.Bounds.Width / 2);
-    direction.X = ( position.X + 10 - (paddle.bounds->minX + (90/2)) ) / (90/2);   
+    direction.X = ( position.X + 10 - (paddlebounds.minX + (90/2)) ) / (90/2);   
     direction = direction.Normalize();
 
     // Increase the speed when the ball is hit
     speed += speedIncrement;
     speed = fmin(speed, maxSpeed);
+
+    //update bounding box
+	bounds.minX = position.X;
+	bounds.maxX = position.X + 10;
+	bounds.minY = position.Y;
+	bounds.maxY = position.Y + 10;
 }
 
-void Ball::brickCollision()
+void Ball::doBrickCollision()
 {
 	direction.Y = -direction.Y;
 }

@@ -1,6 +1,9 @@
+#ifndef BRICK_H
+#define BRICK_H
+
+#include "BoundingBox.h"
 #include <GLFW/glfw3.h>
 #include <iostream>
-#include "BoundingBox.h"
 
 class Brick
 {
@@ -15,3 +18,5 @@ public:
 	void update(float dt);
 	void collision();
 };
+
+#endif

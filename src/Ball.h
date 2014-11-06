@@ -1,9 +1,11 @@
+#ifndef BALL_H
+#define BALL_H
+
+#include "BoundingBox.h"
+#include "Vector2.h"
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <math.h>
-#include "BoundingBox.h"
-#include "Paddle.h"
-#include "Vector2.h"
 
 class Ball
 {
@@ -13,10 +15,12 @@ private:
 	void drawCircle(float cx, float cy, float r, int num_segments);
 	void filledCircle();
 public:
-	BoundingBox *bounds;
+	BoundingBox bounds;
 	Ball();
 	void render();
 	void update(float dt);
-	void brickCollision();
-	void paddleCollision(Paddle paddle);
+	void doBrickCollision();
+	void doPaddleCollision(BoundingBox paddlebounds);
 };
+
+#endif

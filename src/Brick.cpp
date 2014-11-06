@@ -1,5 +1,7 @@
 #include "Brick.h"
 
+using namespace std;
+
 Brick::Brick(int w, int h, int xpos, int ypos, unsigned int color)
 {
 	//split color
@@ -22,13 +24,9 @@ void Brick::render()
 		glTranslatef(x,y,0);
 		glBegin(GL_QUADS);
 			glColor3f((double)R/255,(double)G/255,(double)B/255);
-			//glColor3f(1.f, 0.f, 0.f);
 			glVertex3f(0.f ,0.f , 0.f);
-			//glColor3f(0.f, 1.f, 0.f);
-			glVertex3f(0.f ,height, 0.f);
-			//glColor3f(0.f, 0.f, 1.f);
+			glVertex3f(0.f ,height, 0.f);			
 			glVertex3f(width, height , 0.f);
-			//glColor3f(1.f, 0.f, 1.f);
 			glVertex3f(width, 0.f , 0.f);
 		glEnd();
 		glPopMatrix();

@@ -9,6 +9,7 @@ class BoundingBox
 {
 public:
 	int minX, maxX, minY, maxY;
+	BoundingBox(void);
 	BoundingBox(int left, int right, int top, int bottom);
 	bool checkIntersect(BoundingBox b);
 };

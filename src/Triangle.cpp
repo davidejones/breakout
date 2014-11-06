@@ -1,5 +1,7 @@
 #include "Triangle.h"
 
+using namespace std;
+
 Triangle::Triangle()
 {
     

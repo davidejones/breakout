@@ -1,9 +1,10 @@
 #ifndef PADDLE_H
 #define PADDLE_H
 
+#include "BoundingBox.h"
+#include "Ball.h"
 #include <GLFW/glfw3.h>
 #include <iostream>
-#include "BoundingBox.h"
 
 class Paddle
 {
@@ -14,13 +15,14 @@ private:
 	int vel;
 	bool left, right;
 public:
-	BoundingBox *bounds;
+	BoundingBox bounds;
 	Paddle(int w, int h);
 	void render();
 	void update(float dt);
 	void moveLeft();
 	void moveRight();
 	void moveStop();
+	void checkCollisions(Ball &ball);
 };
 
 #endif
