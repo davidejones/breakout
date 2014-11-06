@@ -126,7 +126,33 @@ void Ball::doPaddleCollision(BoundingBox paddlebounds)
 	bounds.maxY = position.Y + 10;
 }
 
-void Ball::doBrickCollision()
+void Ball::doBrickCollision(Brick *brick)
 {
-	direction.Y = -direction.Y;
+	//direction.Y = -direction.Y;
+	//so determine which side of the brick we hit then reflect away
+
+	if((bounds.maxX-5) <= brick->bounds->minX) {
+		//cout << "left" << endl;
+		position.X = brick->bounds->minX - 5;
+		direction.X = -direction.X;
+	}
+
+	if((bounds.minX+5) >= (brick->bounds->maxX)) {
+		//cout << "right" << endl;
+		position.X = brick->bounds->maxX + 5;
+		direction.X = -direction.X;
+	}
+
+	if((bounds.minY-5) <= brick->bounds->minY) {
+		//cout << "top" << endl;
+		position.Y = brick->bounds->minY - 5;
+		direction.Y = -direction.Y;
+	}
+
+	if((bounds.minY+5) >= (brick->bounds->maxY)) {
+		//cout << "bottom" << endl;
+		position.Y = brick->bounds->maxY + 5;
+		direction.Y = -direction.Y;
+	}
+
 }

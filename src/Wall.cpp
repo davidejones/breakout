@@ -52,8 +52,8 @@ void Wall::checkCollisions(Ball &ball)
 			{
 				if(ball.bounds.checkIntersect(*bricks[i][j]->bounds))
 				{
-					ball.doBrickCollision();
-					bricks[i][j]->collision();
+					ball.doBrickCollision(bricks[i][j]);
+					bricks[i][j]->doCollision();
 				}
 			}
 		}

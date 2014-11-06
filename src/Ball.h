@@ -3,6 +3,7 @@
 
 #include "BoundingBox.h"
 #include "Vector2.h"
+#include "Brick.h"
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <math.h>
@@ -19,7 +20,7 @@ public:
 	Ball();
 	void render();
 	void update(float dt);
-	void doBrickCollision();
+	void doBrickCollision(Brick *brick);
 	void doPaddleCollision(BoundingBox paddlebounds);
 };
 

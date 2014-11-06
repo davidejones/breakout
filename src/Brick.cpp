@@ -13,6 +13,12 @@ Brick::Brick(int w, int h, int xpos, int ypos, unsigned int color)
 	x = xpos;
 	y = ypos;
 	visible = true;
+	/*
+	bounds.minX = x;
+	bounds.maxX = x+w;
+	bounds.minY = y;
+	bounds.maxY = y+h;
+	*/
 	bounds = new BoundingBox(x, x+w, y, y+h);
 }
 
@@ -38,7 +44,7 @@ void Brick::update(float dt)
 	
 }
 
-void Brick::collision()
+void Brick::doCollision()
 {
 	visible = false;
 }

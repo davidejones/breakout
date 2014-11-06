@@ -16,7 +16,7 @@ public:
 	Brick(int w, int h, int xpos, int ypos, unsigned int color);
 	void render();
 	void update(float dt);
-	void collision();
+	void doCollision();
 };
 
 #endif
