@@ -4,7 +4,7 @@
 cmake_minimum_required(VERSION 2.8)
 
 
-set(PROJ_NAME main)
+set(PROJ_NAME jonesybreakout)
 
 
 project(${PROJ_NAME})
