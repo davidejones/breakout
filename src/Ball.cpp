@@ -11,10 +11,10 @@ Ball::Ball()
 	position.X = 600 * 0.5;
 	position.Y = 600 * 0.5;
 	speed = 300;
-    bounds.minX = position.X;
-    bounds.maxX = 10;
-    bounds.minY = position.Y;
-    bounds.maxY = 10;
+    bounds.minX = position.X - 10;
+	bounds.maxX = position.X + 10;
+	bounds.minY = position.Y - 10;
+	bounds.maxY = position.Y + 10;
 }
 
 void Ball::render()
@@ -60,9 +60,9 @@ void Ball::update(float dt)
 	}
 
 	//update bounding box
-	bounds.minX = position.X;
+	bounds.minX = position.X - 10;
 	bounds.maxX = position.X + 10;
-	bounds.minY = position.Y;
+	bounds.minY = position.Y - 10;
 	bounds.maxY = position.Y + 10;
 }
 
@@ -120,9 +120,9 @@ void Ball::doPaddleCollision(BoundingBox paddlebounds)
     speed = fmin(speed, maxSpeed);
 
     //update bounding box
-	bounds.minX = position.X;
+	bounds.minX = position.X - 10;
 	bounds.maxX = position.X + 10;
-	bounds.minY = position.Y;
+	bounds.minY = position.Y - 10;
 	bounds.maxY = position.Y + 10;
 }
 
@@ -131,28 +131,35 @@ void Ball::doBrickCollision(Brick *brick)
 	//direction.Y = -direction.Y;
 	//so determine which side of the brick we hit then reflect away
 
+	//cout << direction.X << " " << direction.Y << endl;
+	
 	if((bounds.maxX-5) <= brick->bounds->minX) {
 		//cout << "left" << endl;
-		position.X = brick->bounds->minX - 5;
+		position.X = brick->bounds->minX;
 		direction.X = -direction.X;
 	}
 
 	if((bounds.minX+5) >= (brick->bounds->maxX)) {
 		//cout << "right" << endl;
-		position.X = brick->bounds->maxX + 5;
+		position.X = brick->bounds->maxX;
 		direction.X = -direction.X;
 	}
 
 	if((bounds.minY-5) <= brick->bounds->minY) {
 		//cout << "top" << endl;
-		position.Y = brick->bounds->minY - 5;
+		position.Y = brick->bounds->minY;
 		direction.Y = -direction.Y;
 	}
 
 	if((bounds.minY+5) >= (brick->bounds->maxY)) {
 		//cout << "bottom" << endl;
-		position.Y = brick->bounds->maxY + 5;
+		position.Y = brick->bounds->maxY;
 		direction.Y = -direction.Y;
 	}
 
+	//update bounding box
+	bounds.minX = position.X - 10;
+	bounds.maxX = position.X + 10;
+	bounds.minY = position.Y - 10;
+	bounds.maxY = position.Y + 10;
 }

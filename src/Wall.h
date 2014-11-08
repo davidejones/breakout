@@ -11,6 +11,7 @@ class Wall
 {
 private:
 	Brick *bricks[5][10];
+	int rows, cols;
 public:
 	Wall(int levelarray[][10]);
 	void render();

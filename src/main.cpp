@@ -8,6 +8,7 @@
 void render();
 void update(float dt);
 void checkCollisions();
+void drawBoundBoxes();
 
 using namespace std;
 
@@ -129,6 +130,8 @@ void render()
 	paddle.render();
 	wall.render();
 
+	drawBoundBoxes();
+
 	gameWindow->render();
 }
 
@@ -147,4 +150,28 @@ void checkCollisions()
 {
 	wall.checkCollisions(ball);
 	paddle.checkCollisions(ball);
+}
+
+void drawBoundBoxes()
+{
+    //glPushMatrix();
+	//glTranslatef(ball.bounds.minX,ball.bounds.minY,0);
+	glBegin(GL_LINE_LOOP);
+		glColor3f(0.f, 1.f, 0.f);
+		glVertex3f(ball.bounds.minX, ball.bounds.minY , 0.f);
+		glVertex3f(ball.bounds.minX, ball.bounds.maxY, 0.f);
+		glVertex3f(ball.bounds.maxX, ball.bounds.maxY, 0.f);
+		glVertex3f(ball.bounds.maxX, ball.bounds.minY , 0.f);
+	glEnd();
+	//glPopMatrix();
+
+	glBegin(GL_LINE_LOOP);
+		glColor3f(0.f, 1.f, 0.f);
+		glVertex3f(paddle.bounds.minX, paddle.bounds.minY , 0.f);
+		glVertex3f(paddle.bounds.minX, paddle.bounds.maxY, 0.f);
+		glVertex3f(paddle.bounds.maxX, paddle.bounds.maxY, 0.f);
+		glVertex3f(paddle.bounds.maxX, paddle.bounds.minY , 0.f);
+	glEnd();
+
+	//wall bounds	
 }
