@@ -34,8 +34,10 @@ find_package(OpenGL REQUIRED)
 # add dependencies directory so we build glfw3 from source etc
 add_subdirectory(deps)
 
+include_directories(${GLFW_SOURCE_DIR})
+
 # add dependencies headers so we can find them
-include_directories(dependencies/glfw/include)
+include_directories(deps/glfw/include)
 
 # Add a target executable
 add_executable(${PROJ_NAME}
