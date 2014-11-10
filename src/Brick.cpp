@@ -41,7 +41,10 @@ void Brick::render()
 
 void Brick::update(float dt)
 {
-	
+	bounds->minX = x;
+	bounds->maxX = x+width;
+	bounds->minY = y;
+	bounds->maxY = y+height;
 }
 
 void Brick::doCollision()

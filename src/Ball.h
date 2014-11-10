@@ -12,9 +12,9 @@ class Ball
 {
 private:
 	Vector2 direction, position;
-	int speed, maxSpeed, speedIncrement;
+	int maxSpeed, speedIncrement;
+	float speed;
 	void drawCircle(float cx, float cy, float r, int num_segments);
-	void filledCircle();
 public:
 	BoundingBox bounds;
 	Ball();

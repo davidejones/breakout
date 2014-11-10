@@ -10,3 +10,6 @@ breakout game
 5. cmake ..
 6. make
 7. ./main
+
+1. cmake -G "MinGW Makefiles" ..
+2. mingw32-make

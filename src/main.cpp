@@ -154,6 +154,7 @@ void checkCollisions()
 
 void drawBoundBoxes()
 {
+	/*
     //glPushMatrix();
 	//glTranslatef(ball.bounds.minX,ball.bounds.minY,0);
 	glBegin(GL_LINE_LOOP);
@@ -173,5 +174,6 @@ void drawBoundBoxes()
 		glVertex3f(paddle.bounds.maxX, paddle.bounds.minY , 0.f);
 	glEnd();
 
-	//wall bounds	
+	//wall bounds
+	*/	
 }
