@@ -2,6 +2,8 @@
 #include "Ball.h"
 #include "Paddle.h"
 #include "Wall.h"
+#include "Collision.h"
+#include "InputHandler.h"
 #include <GLFW/glfw3.h>
 #include <iostream>
 
@@ -46,31 +48,11 @@ int Level4[5][10] = {
 	{1,0,1,0,1,0,1,0,1,0}
 };
 Wall wall(Level1);
-const bool* buttons;
-int numbuttons;
-const float* axes;
-int numaxes;
+InputHandler inputhandler;
 
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, GL_TRUE);
-
-    if(key == GLFW_KEY_A || key == GLFW_KEY_LEFT )
-    {
-    	//left
-    	paddle.moveLeft();
-    }
-    if(key == GLFW_KEY_D || key == GLFW_KEY_RIGHT)
-    {
-    	//right
-    	paddle.moveRight();
-    }
-
-    if(action == GLFW_RELEASE) 
-    {
-    	paddle.moveStop();
-    }
+	inputhandler.key_callback(window, key, scancode, action, mods);
 }
 
 int main(void)
@@ -78,33 +60,13 @@ int main(void)
 	gameWindow = new GameWindow();
 	gameWindow->setKeyCallback(key_callback);
 
+	//add paddle to input handler so we can react on control input
+	Observer* padobserver = &paddle;
+	inputhandler.addObserver(padobserver);
+
 	/* Loop until the user closes the window */
 	while (!gameWindow->windowShouldClose())
 	{
-		if (glfwJoystickPresent(GLFW_JOYSTICK_1) == GL_TRUE) 
-		{
-			buttons = (bool*)glfwGetJoystickButtons(GLFW_JOYSTICK_1, &numbuttons);
-			axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &numaxes);
-			for (int i = 0; i < numbuttons; i++) 
-			{
-				if(buttons[i] == GL_TRUE)
-				{
-					//pressed
-					//A = 0, X = 2, Y = 3, B = 1, 4 left shoulder, 5 right shoulder
-					//cout << i << endl;
-				}
-			}
-
-			//cout << axes[0] << endl;
-			if(axes[0] < 0 && axes[0] <= -1.0f) {
-				paddle.moveLeft();
-			} else if(axes[0] > 0 && axes[0] >= 1.0f) {
-				paddle.moveRight();
-			} else {
-				paddle.moveStop();
-			}
-		}
-
 		// Set frame time
 		float currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
@@ -137,19 +99,73 @@ void render()
 
 void update(float dt)
 {
+	// checking inputs and fire events
+	inputhandler.checkInput();
+
 	checkCollisions();
 
-	ball.update(dt);
+	int iterationsPerFrame = 20;
+	float iterationDelta = dt/iterationsPerFrame;
+
+	for (int i = 0; i < iterationsPerFrame; ++i)
+	{
+		ball.update(iterationDelta);
+		checkCollisions();
+	}
+
 	paddle.update(dt);
 	wall.update(dt);
+
+	//check if game is over
+	bool gameover = true;
+	for (int i = 0; i < 5; ++i)
+	{
+		for (int j = 0; j < 10; ++j)
+		{
+			if(wall.bricks[i][j]->visible)
+			{
+				gameover = false;
+			}
+		}
+	}
+
+	if(gameover) {
+		cout << "GAME OVER!!!" << endl;
+	}
 
 	gameWindow->update(dt);
 }
 
 void checkCollisions()
 {
-	wall.checkCollisions(ball);
-	paddle.checkCollisions(ball);
+	//if ball collides with paddle, call onCollisionEnter2D on both objects
+	//if ball collides with brick, call onCollisionEnter2D on both objects
+	//if above collisions still occouring fire onCollisionStay2D on both
+	//if collision is over fire onCollisionExit2D on both
+	if(ball.bounds.checkIntersect(paddle.bounds))
+	{
+		Collision col1(&paddle,"paddle");
+		ball.OnCollisionEnter2D(col1);
+		Collision col2(&ball,"ball");
+		paddle.OnCollisionEnter2D(col2);
+	}
+
+	for (int i = 0; i < 5; ++i)
+	{
+		for (int j = 0; j < 10; ++j)
+		{
+			if(wall.bricks[i][j]->visible)
+			{
+				if(ball.bounds.checkIntersect(wall.bricks[i][j]->bounds))
+				{
+					Collision col3(wall.bricks[i][j], "brick");
+					Collision col4(&ball, "ball");
+					ball.OnCollisionEnter2D(col3);
+					wall.bricks[i][j]->OnCollisionEnter2D(col4);
+				}
+			}
+		}
+	}
 }
 
 void drawBoundBoxes()

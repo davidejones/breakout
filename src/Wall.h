@@ -10,9 +10,9 @@
 class Wall
 {
 private:
-	Brick *bricks[5][10];
 	int rows, cols;
 public:
+	Brick *bricks[5][10];
 	Wall(int levelarray[][10]);
 	void render();
 	void update(float dt);

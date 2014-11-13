@@ -2,19 +2,19 @@
 
 using namespace std;
 
-Ball::Ball()
-{
+Ball::Ball(): GameObject() {
 	speedIncrement = 50;
 	maxSpeed = 1000;
 	direction.X = 1;
 	direction.Y = 1;
 	position.X = 600 * 0.5;
 	position.Y = 600 * 0.5;
-	speed = 100.0f; // pixels per second
-    bounds.minX = position.X - 10;
-	bounds.maxX = position.X + 10;
-	bounds.minY = position.Y - 10;
-	bounds.maxY = position.Y + 10;
+	speed = 300.0f; // pixels per second
+    GameObject::bounds.minX = position.X - 10;
+	GameObject::bounds.maxX = position.X + 10;
+	GameObject::bounds.minY = position.Y - 10;
+	GameObject::bounds.maxY = position.Y + 10;
+	iterationsPerFrame = 10;
 }
 
 void Ball::render()
@@ -28,34 +28,35 @@ void Ball::render()
 
 void Ball::update(float dt)
 {
+
 	position.X += direction.X * speed * dt;
 	position.Y += direction.Y * speed * dt;
 
 	//update bounding box
-	bounds.minX = position.X - 10;
-	bounds.maxX = position.X + 10;
-	bounds.minY = position.Y - 10;
-	bounds.maxY = position.Y + 10;
+	GameObject::bounds.minX = position.X - 10;
+	GameObject::bounds.maxX = position.X + 10;
+	GameObject::bounds.minY = position.Y - 10;
+	GameObject::bounds.maxY = position.Y + 10;
 
 	//if ball hits right side
-	if(bounds.maxX >= 600)
+	if(GameObject::bounds.maxX >= 600)
 	{
 		direction.X *= -1;
 	}
 
 	//if ball hits left side
-	if(bounds.minX <= 0)
+	if(GameObject::bounds.minX <= 0)
 	{
 		direction.X *= -1;
 	}
 
 	//if ball hits the bottom
-	if(bounds.maxY >= 600)
+	if(GameObject::bounds.maxY >= 600)
 	{
 		cout << "Life Lost.." << endl;
 
 		//reset variables and ballpos
-		speed = 100.0f;
+		//speed = 100.0f;
 		direction.X = 1;
 		direction.Y = 1;
 		position.X = 600 * 0.5;
@@ -63,10 +64,12 @@ void Ball::update(float dt)
 	}
 
 	//if ball hits the top
-	if(bounds.minY <= 0)
+	if(GameObject::bounds.minY <= 0)
 	{
 		direction.Y *= -1;
 	}
+
+	// check collision
 }
 
 void Ball::drawCircle(float cx, float cy, float r, int num_segments)
@@ -87,56 +90,52 @@ void Ball::drawCircle(float cx, float cy, float r, int num_segments)
     glEnd();
 }
 
-void Ball::doPaddleCollision(BoundingBox paddlebounds)
+void Ball::OnCollisionEnter2D(Collision collision)
 {
-	direction.Y = -direction.Y;
-    position.Y = paddlebounds.minY - 10;
-
-    //direction.X = ((float)Bounds.Center.X - paddle.Bounds.Center.X) / (paddle.Bounds.Width / 2);
-    direction.X = ( position.X + 10 - (paddlebounds.minX + (90/2)) ) / (90/2);   
-    direction = direction.Normalize();
-
-    // Increase the speed when the ball is hit
-    speed += speedIncrement;
-    speed = fmin(speed, maxSpeed);
-
-    //update bounding box
-	bounds.minX = position.X - 10;
-	bounds.maxX = position.X + 10;
-	bounds.minY = position.Y - 10;
-	bounds.maxY = position.Y + 10;
-}
-
-void Ball::doBrickCollision(Brick *brick)
-{
-	//direction.Y = -direction.Y;
-	//so determine which side of the brick we hit then reflect away
-
-	//cout << direction.X << " " << direction.Y << endl;
-	
-	if(bounds.maxX < (brick->bounds->minX + 40) && bounds.maxX >= brick->bounds->minX) {
-		cout << "left" << endl;
-		position.X = bounds.minX-10;
-		//direction.X = -direction.X;
-	}
-
-	if(bounds.minX > (brick->bounds->maxX - 40) && bounds.minX <= brick->bounds->maxX) {
-		cout << "right" << endl;
-		position.X = bounds.maxX-10;
-		//direction.X = -direction.X;
-	}
-
-	//if less than center point and less than the miny 
-	if(bounds.minY < (brick->bounds->minY + 10) && bounds.minY >= brick->bounds->minY) {
-		cout << "top" << endl;
-		position.Y = brick->bounds->minY-5;
+	//if gameobject is paddle
+	if(collision.name == "paddle")
+	{
 		direction.Y = -direction.Y;
-	}
+	    position.Y = collision.gameObject->bounds.minY - 10;
 
-	//if greater than center point but less than maxy - brick size 80/20 w/h
-	if(bounds.minY > (brick->bounds->maxY - 10) && bounds.minY <= brick->bounds->maxY) {
-		cout << "bottom" << endl;
-		position.Y = brick->bounds->maxY+5;
-		direction.Y = -direction.Y;
+	    //direction.X = ((float)Bounds.Center.X - paddle.Bounds.Center.X) / (paddle.Bounds.Width / 2);
+	    direction.X = ( position.X + 10 - (collision.gameObject->bounds.minX + (90/2)) ) / (90/2);   
+	    direction = direction.Normalize();
+
+	    // Increase the speed when the ball is hit
+	    //speed += speedIncrement;
+	    //speed = fmin(speed, maxSpeed);
+
+	    //update bounding box
+		GameObject::bounds.minX = position.X - 10;
+		GameObject::bounds.maxX = position.X + 10;
+		GameObject::bounds.minY = position.Y - 10;
+		GameObject::bounds.maxY = position.Y + 10;
+
+	} else if(collision.name == "brick") {
+
+		if(GameObject::bounds.maxX <= collision.gameObject->bounds.minX) {
+			//cout << "left" << endl;
+			position.X = collision.gameObject->bounds.minX - 11;
+			direction.X = -direction.X;
+		}
+		if(GameObject::bounds.minX >= collision.gameObject->bounds.maxX) {
+			//cout << "right" << endl;
+			position.X = collision.gameObject->bounds.maxX + 11;
+			direction.X = -direction.X;
+		}
+		//if less than center point and less than the miny
+		if(GameObject::bounds.maxY <= collision.gameObject->bounds.minY) {
+			//cout << "top" << endl;
+			position.Y = collision.gameObject->bounds.minY - 11;
+			direction.Y = -direction.Y;
+		}
+		//if greater than center point but less than maxy - brick size 80/20 w/h
+		if(GameObject::bounds.minY >= collision.gameObject->bounds.maxY) {
+			//cout << "bottom" << endl;
+			position.Y = collision.gameObject->bounds.maxY + 11;
+			direction.Y = -direction.Y;
+		}
+		
 	}
 }

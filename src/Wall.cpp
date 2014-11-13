@@ -47,6 +47,7 @@ void Wall::update(float dt)
 
 void Wall::checkCollisions(Ball &ball)
 {
+	/*
 	for (int i = 0; i < rows; ++i)
 	{
 		for (int j = 0; j < cols; ++j)
@@ -61,4 +62,5 @@ void Wall::checkCollisions(Ball &ball)
 			}
 		}
 	}
+	*/
 }

@@ -2,8 +2,7 @@
 
 using namespace std;
 
-Paddle::Paddle(int w, int h)
-{
+Paddle::Paddle(int w, int h): GameObject() {
 	maxspeed = 10;
 	vel = 1;
 	dx = 0;
@@ -12,10 +11,10 @@ Paddle::Paddle(int w, int h)
 	height = h;
 	x = 300;
 	y = 600 - h;
-	bounds.minX = x;
-	bounds.maxX = x + width;
-	bounds.minY = y;
-	bounds.maxY = y + height;
+	GameObject::bounds.minX = x;
+	GameObject::bounds.maxX = x + width;
+	GameObject::bounds.minY = y;
+	GameObject::bounds.maxY = y + height;
 }
 
 void Paddle::render()
@@ -48,8 +47,8 @@ void Paddle::update(float dt)
 				vel = maxspeed;
 			}
 			x -= vel;
-			bounds.minX = x;
-			bounds.maxX = x + width;
+			GameObject::bounds.minX = x;
+			GameObject::bounds.maxX = x + width;
 		}
 	} else if(right) {
 		if(x < 600 - width)
@@ -60,8 +59,8 @@ void Paddle::update(float dt)
 			}
 
 			x += vel;
-			bounds.minX = x;
-			bounds.maxX = x + width;
+			GameObject::bounds.minX = x;
+			GameObject::bounds.maxX = x + width;
 		}
 	}	
 }
@@ -84,10 +83,7 @@ void Paddle::moveStop()
 	right = false;
 }
 
-void Paddle::checkCollisions(Ball &ball)
+void Paddle::OnCollisionEnter2D(Collision collision)
 {
-	if(ball.bounds.checkIntersect(bounds))
-	{
-		ball.doPaddleCollision(bounds);
-	}
+	//cout << "paddle collision" << endl;
 }

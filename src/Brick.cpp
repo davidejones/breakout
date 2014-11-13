@@ -2,8 +2,7 @@
 
 using namespace std;
 
-Brick::Brick(int w, int h, int xpos, int ypos, unsigned int color)
-{
+Brick::Brick(int w, int h, int xpos, int ypos, unsigned int color): GameObject() {
 	//split color
 	R = color >> 16;
 	G = color >> 8 & 0xFF;
@@ -13,13 +12,11 @@ Brick::Brick(int w, int h, int xpos, int ypos, unsigned int color)
 	x = xpos;
 	y = ypos;
 	visible = true;
-	/*
-	bounds.minX = x;
-	bounds.maxX = x+w;
-	bounds.minY = y;
-	bounds.maxY = y+h;
-	*/
-	bounds = new BoundingBox(x, x+w, y, y+h);
+	GameObject::bounds.minX = x;
+	GameObject::bounds.maxX = x+w;
+	GameObject::bounds.minY = y;
+	GameObject::bounds.maxY = y+h;
+	//bounds = new BoundingBox(x, x+w, y, y+h);
 }
 
 void Brick::render()
@@ -41,13 +38,20 @@ void Brick::render()
 
 void Brick::update(float dt)
 {
-	bounds->minX = x;
-	bounds->maxX = x+width;
-	bounds->minY = y;
-	bounds->maxY = y+height;
+	//bounds->minX = x;
+	//bounds->maxX = x+width;
+	//bounds->minY = y;
+	//bounds->maxY = y+height;
+	GameObject::bounds.minX = x;
+	GameObject::bounds.maxX = x+width;
+	GameObject::bounds.minY = y;
+	GameObject::bounds.maxY = y+height;
 }
 
-void Brick::doCollision()
+void Brick::OnCollisionEnter2D(Collision collision)
 {
-	visible = false;
+	if(collision.name == "ball")
+	{
+		visible = false;
+	}
 }
