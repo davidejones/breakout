@@ -62,28 +62,60 @@ void Paddle::update(float dt)
 			GameObject::bounds.minX = x;
 			GameObject::bounds.maxX = x + width;
 		}
-	}	
-}
+	} else {
 
-void Paddle::moveLeft()
-{
-	left = true;
-	right = false;
-}
+		if(x >= 600 - width)
+		{
+			x = 600 - width;
+		}
 
-void Paddle::moveRight()
-{
-	left = false;
-	right = true;
-}
+		if(x < 0)
+		{
+			x = 0;
+		}
 
-void Paddle::moveStop() 
-{
-	left = false;
-	right = false;
+		GameObject::bounds.minX = x;
+		GameObject::bounds.maxX = x + width;
+		
+	}
 }
 
 void Paddle::OnCollisionEnter2D(Collision collision)
 {
 	//cout << "paddle collision" << endl;
+}
+
+void Paddle::onNotify(string eventname)
+{
+	if(eventname == "KEY_LEFT_DOWN")
+	{
+		left = true;
+		right = false;
+	}
+
+	if(eventname == "JOYSTICK_LEFT_DOWN")
+	{
+		x -= 10;
+		GameObject::bounds.minX = x;
+		GameObject::bounds.maxX = x + width;
+	}
+
+	if(eventname == "KEY_RIGHT_DOWN")
+	{
+		left = false;
+		right = true;
+	}
+
+	if(eventname == "JOYSTICK_RIGHT_DOWN")
+	{
+		x += 10;
+		GameObject::bounds.minX = x;
+		GameObject::bounds.maxX = x + width;
+	}
+
+	if(eventname == "KEY_LEFT_UP" || eventname == "KEY_RIGHT_UP" || eventname == "RELEASE")
+	{
+		left = false;
+		right = false;
+	}
 }

@@ -2,21 +2,22 @@
 #define WALL_H
 
 #include "Brick.h"
-#include "Ball.h"
 #include "BoundingBox.h"
 #include <GLFW/glfw3.h>
+#include <vector>
 #include <iostream>
 
 class Wall
 {
 private:
 	int rows, cols;
-public:
-	Brick *bricks[5][10];
-	Wall(int levelarray[][10]);
+public:	
+	std::vector< std::vector<Brick> > bricks;
+	Wall();
+	Wall(std::vector< std::vector<double> > level);
 	void render();
 	void update(float dt);
-	void checkCollisions(Ball &ball);
+	void setLevel(std::vector< std::vector<double> > level);
 };
 
 #endif

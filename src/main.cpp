@@ -5,6 +5,7 @@
 #include "Collision.h"
 #include "InputHandler.h"
 #include <GLFW/glfw3.h>
+#include <vector>
 #include <iostream>
 
 void render();
@@ -19,35 +20,9 @@ float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 Ball ball;
 Paddle paddle(90,10);
-int Level1[5][10] = {
-	{1,1,1,1,1,1,1,1,1,1},
-	{1,1,1,1,1,1,1,1,1,1},
-	{1,1,1,1,1,1,1,1,1,1},
-	{1,1,1,1,1,1,1,1,1,1},
-	{1,1,1,1,1,1,1,1,1,1}
-};
-int Level2[5][10] = {
-	{0,0,0,1,1,1,1,0,0,0},
-	{0,0,1,1,1,1,1,1,0,0},
-	{1,1,1,1,1,1,1,1,1,1},
-	{0,1,1,1,1,1,1,1,0,0},
-	{0,0,0,1,1,1,1,0,0,0}
-};
-int Level3[5][10] = {
-	{0,1,0,1,0,1,0,1,0,1},
-	{0,1,0,1,0,1,0,1,0,1},
-	{0,1,0,1,0,1,0,1,0,1},
-	{0,1,0,1,0,1,0,1,0,1},
-	{0,1,0,1,0,1,0,1,0,1}
-};
-int Level4[5][10] = {
-	{1,0,1,0,1,0,1,0,1,0},
-	{0,1,0,1,0,1,0,1,0,1},
-	{1,0,1,0,1,0,1,0,1,0},
-	{0,1,0,1,0,1,0,1,0,1},
-	{1,0,1,0,1,0,1,0,1,0}
-};
-Wall wall(Level1);
+vector< vector<double> > level1;
+vector< vector<double> > level2;
+Wall wall;
 InputHandler inputhandler;
 
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -55,8 +30,20 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 	inputhandler.key_callback(window, key, scancode, action, mods);
 }
 
+void setupLevels()
+{
+	level1.resize( 5 , vector<double>( 7 , 1 ) );
+	level2.resize( 5 , vector<double>( 7 , 1 ) );
+
+	level2[3] = vector<double>( 7 , 0 );
+
+	wall.setLevel(level1);
+}
+
 int main(void)
 {
+	setupLevels();
+
 	gameWindow = new GameWindow();
 	gameWindow->setKeyCallback(key_callback);
 
@@ -116,13 +103,13 @@ void update(float dt)
 	paddle.update(dt);
 	wall.update(dt);
 
-	//check if game is over
+	//check if game is over	
 	bool gameover = true;
-	for (int i = 0; i < 5; ++i)
+	for (int i = 0; i < wall.bricks.size(); ++i)
 	{
-		for (int j = 0; j < 10; ++j)
+		for (int j = 0; j < wall.bricks[i].size(); ++j)
 		{
-			if(wall.bricks[i][j]->visible)
+			if(wall.bricks[i][j].visible)
 			{
 				gameover = false;
 			}
@@ -130,7 +117,7 @@ void update(float dt)
 	}
 
 	if(gameover) {
-		cout << "GAME OVER!!!" << endl;
+		wall.setLevel(level2);
 	}
 
 	gameWindow->update(dt);
@@ -150,18 +137,18 @@ void checkCollisions()
 		paddle.OnCollisionEnter2D(col2);
 	}
 
-	for (int i = 0; i < 5; ++i)
+	for (int i = 0; i < wall.bricks.size(); ++i)
 	{
-		for (int j = 0; j < 10; ++j)
+		for (int j = 0; j < wall.bricks[i].size(); ++j)
 		{
-			if(wall.bricks[i][j]->visible)
+			if(wall.bricks[i][j].visible)
 			{
-				if(ball.bounds.checkIntersect(wall.bricks[i][j]->bounds))
+				if(ball.bounds.checkIntersect(wall.bricks[i][j].bounds))
 				{
-					Collision col3(wall.bricks[i][j], "brick");
+					Collision col3(&wall.bricks[i][j], "brick");
 					Collision col4(&ball, "ball");
 					ball.OnCollisionEnter2D(col3);
-					wall.bricks[i][j]->OnCollisionEnter2D(col4);
+					wall.bricks[i][j].OnCollisionEnter2D(col4);
 				}
 			}
 		}

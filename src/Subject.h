@@ -4,6 +4,7 @@
 #include "Observer.h"
 #include <iostream>
 #include <vector>
+#include <string>
 
 class Subject
 {
@@ -13,7 +14,7 @@ public:
 	Subject();
 	void addObserver(Observer* observer);
 	void removeObserver(Observer* observer);
-	void notify();
+	void notify(std::string eventname);
 };
 
 #endif

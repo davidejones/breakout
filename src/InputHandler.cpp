@@ -12,34 +12,30 @@ void InputHandler::key_callback(GLFWwindow* window, int key, int scancode, int a
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
 
-    if(key == GLFW_KEY_A || key == GLFW_KEY_LEFT )
-    {
-    	//left
-    	//paddle.moveLeft();
-    }
-    if(key == GLFW_KEY_D || key == GLFW_KEY_RIGHT)
-    {
-    	//right
-    	//paddle.moveRight();
-    }
-
-    if(action == GLFW_RELEASE) 
-    {
-    	//paddle.moveStop();
-    }
+	if(action == GLFW_PRESS)
+	{
+		if(key == GLFW_KEY_A || key == GLFW_KEY_LEFT )
+		{
+			Subject::notify("KEY_LEFT_DOWN");
+		}
+	    if(key == GLFW_KEY_D || key == GLFW_KEY_RIGHT)
+	    {
+	    	Subject::notify("KEY_RIGHT_DOWN");
+	    }
+	} else if(action == GLFW_RELEASE) {
+		if(key == GLFW_KEY_A || key == GLFW_KEY_LEFT )
+		{
+			Subject::notify("KEY_LEFT_UP");
+		}
+		if(key == GLFW_KEY_D || key == GLFW_KEY_RIGHT)
+	    {
+	    	Subject::notify("KEY_RIGHT_UP");
+	    }
+	}
 }
 
 void InputHandler::checkInput()
 {
-	//let observers know
-	//Subject::notify();
-	/*
-		EVENTS
-		LEFT
-		RIGHT
-		PAUSE
-	*/
-
 	if (glfwJoystickPresent(GLFW_JOYSTICK_1) == GL_TRUE) 
 	{
 		buttons = (bool*)glfwGetJoystickButtons(GLFW_JOYSTICK_1, &numbuttons);
@@ -48,20 +44,39 @@ void InputHandler::checkInput()
 		{
 			if(buttons[i] == GL_TRUE)
 			{
-				//pressed
-				//A = 0, X = 2, Y = 3, B = 1, 4 left shoulder, 5 right shoulder
-				//cout << i << endl;
+				if(i == XBOX360_A)
+				{
+					cout << "A Button" << endl;
+				}
+				if(i == XBOX360_B)
+				{
+					cout << "B Button" << endl;
+				}
+				if(i == XBOX360_X)
+				{
+					cout << "X Button" << endl;
+				}
+				if(i == XBOX360_Y)
+				{
+					cout << "Y Button" << endl;
+				}
+				if(i == XBOX360_START)
+				{
+					Subject::notify("TOGGLE_PAUSE");
+				}
 			}
 		}
 
 		//cout << axes[0] << endl;
-		if(axes[0] < 0 && axes[0] <= -1.0f) {
-			//paddle.moveLeft();
+		if(axes[0] < 0 && axes[0] <= -1.0f) 
+		{
+			//position = axes[0] * speed;
+			//position *= deltaTime;
+			Subject::notify("JOYSTICK_LEFT_DOWN");
 		} else if(axes[0] > 0 && axes[0] >= 1.0f) {
-			//paddle.moveRight();
-		} else {
-			//paddle.moveStop();
+			Subject::notify("JOYSTICK_RIGHT_DOWN");
+		} else if(axes[0] == 1.0f) {
+			Subject::notify("RELEASE");
 		}
 	}
-
 }

@@ -7,6 +7,7 @@
 #include "Observer.h"
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <string>
 
 class Paddle: public GameObject, public Observer
 {
@@ -21,15 +22,9 @@ public:
 	Paddle(int w, int h);
 	void render();
 	void update(float dt);
-	void moveLeft();
-	void moveRight();
-	void moveStop();
 	void checkCollisions(Ball &ball);
 	void OnCollisionEnter2D(Collision collision);
-	void onNotify()
-	{
-		std::cout << "paddle received message" << std::endl;
-	}
+	void onNotify(std::string eventname);
 };
 
 #endif

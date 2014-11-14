@@ -1,7 +1,9 @@
 #ifndef INPUTHANDLER_H
 #define INPUTHANDLER_H
 
+#include "Xbox360Controller.h"
 #include "Subject.h"
+#include "Event.h"
 #include <GLFW/glfw3.h>
 #include <iostream>
 

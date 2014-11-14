@@ -2,65 +2,70 @@
 
 using namespace std;
 
-Wall::Wall(int levelarray[][10])
+Wall::Wall()
 {
-	rows =  5;
-	cols = 10;
 
-	//create bricks
-	unsigned int col = 0xFF0000;
-	for (int i = 0; i < rows; ++i)
+}
+
+Wall::Wall(vector< vector<double> > level)
+{
+	setLevel(level);
+}
+
+void Wall::setLevel(vector< vector<double> > level)
+{
+	unsigned int color = 0xFF0000;
+	int rowindex = 0;
+	int colindex = 0;
+	bool vis = true;
+
+	vector< vector<double> >::const_iterator row;
+	vector<double>::const_iterator col;
+	for (row = level.begin(); row != level.end(); ++row) 
 	{
-		if(i == 0) col = 0xFF0000;
-		if(i == 1) col = 0x00FF00;
-		if(i == 2) col = 0x0000FF;
-		if(i == 3) col = 0xFF00FF;
-		if(i == 4) col = 0xFFFF00;
-		for (int j = 0; j < cols; ++j)
+		if(rowindex == 0) color = 0xFF0000;
+		if(rowindex == 1) color = 0x00FF00;
+		if(rowindex == 2) color = 0x0000FF;
+		if(rowindex == 3) color = 0xFF00FF;
+		if(rowindex == 4) color = 0xFFFF00;
+		vector<Brick> brick_vector;
+		colindex = 0;
+		for (col = row->begin(); col != row->end(); ++col) 
 		{
-			bricks[i][j] = new Brick(80,20,85 * j, 25 * i, col);
+			vis = *col;
+			brick_vector.push_back(Brick(80,20,85 * colindex, 25 * rowindex, color, vis));
+			++colindex;
+			vis = true;
 		}
+		bricks.push_back(brick_vector);
+		++rowindex;
 	}
 }
 
 void Wall::render()
 {
-	for (int i = 0; i < rows; ++i)
+	for (int i = 0; i < bricks.size(); ++i)
 	{
-		for (int j = 0; j < cols; ++j)
-		{
-			bricks[i][j]->render();
+		for (int j = 0; j < bricks[i].size(); ++j)
+		{			
+			if(bricks[i][j].visible)
+			{
+				bricks[i][j].render();
+			}
 		}
 	}
 }
 
 void Wall::update(float dt)
 {
-	for (int i = 0; i < rows; ++i)
+	for (int i = 0; i < bricks.size(); ++i)
 	{
-		for (int j = 0; j < cols; ++j)
+		for (int j = 0; j < bricks[i].size(); ++j)
 		{
-			bricks[i][j]->update(dt);
-		}
-	}
-}
-
-void Wall::checkCollisions(Ball &ball)
-{
-	/*
-	for (int i = 0; i < rows; ++i)
-	{
-		for (int j = 0; j < cols; ++j)
-		{
-			if(bricks[i][j]->visible)
+			if(bricks[i][j].visible)
 			{
-				if(ball.bounds.checkIntersect(*bricks[i][j]->bounds))
-				{
-					ball.doBrickCollision(bricks[i][j]);
-					bricks[i][j]->doCollision();
-				}
+				bricks[i][j].update(dt);
 			}
 		}
 	}
-	*/
 }

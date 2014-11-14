@@ -16,8 +16,8 @@ void Subject::removeObserver(Observer* observer) {
 	//views.erase(std::remove(views.begin(), views.end(), observer), views.end()); 
 }
 
-void Subject::notify() {
+void Subject::notify(string eventname) {
 	// 5. Publisher broadcasts
 	for (int i = 0; i < views.size(); i++)
-		views[i]->onNotify();
+		views[i]->onNotify(eventname);
 }

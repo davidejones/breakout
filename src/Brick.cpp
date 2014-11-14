@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Brick::Brick(int w, int h, int xpos, int ypos, unsigned int color): GameObject() {
+Brick::Brick(int w, int h, int xpos, int ypos, unsigned int color, bool visibility): GameObject() {
 	//split color
 	R = color >> 16;
 	G = color >> 8 & 0xFF;
@@ -11,7 +11,7 @@ Brick::Brick(int w, int h, int xpos, int ypos, unsigned int color): GameObject()
 	height = h;
 	x = xpos;
 	y = ypos;
-	visible = true;
+	visible = visibility;
 	GameObject::bounds.minX = x;
 	GameObject::bounds.maxX = x+w;
 	GameObject::bounds.minY = y;
@@ -38,14 +38,13 @@ void Brick::render()
 
 void Brick::update(float dt)
 {
-	//bounds->minX = x;
-	//bounds->maxX = x+width;
-	//bounds->minY = y;
-	//bounds->maxY = y+height;
-	GameObject::bounds.minX = x;
-	GameObject::bounds.maxX = x+width;
-	GameObject::bounds.minY = y;
-	GameObject::bounds.maxY = y+height;
+	if(visible)
+	{
+		GameObject::bounds.minX = x;
+		GameObject::bounds.maxX = x+width;
+		GameObject::bounds.minY = y;
+		GameObject::bounds.maxY = y+height;
+	}
 }
 
 void Brick::OnCollisionEnter2D(Collision collision)
