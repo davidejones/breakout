@@ -7,8 +7,8 @@ Ball::Ball(): GameObject() {
 	maxSpeed = 1000;
 	direction.X = 1;
 	direction.Y = 1;
-	position.X = 600 * 0.5;
-	position.Y = 600 * 0.5;
+	position.X = 1920 * 0.5;
+	position.Y = 1080 * 0.5;
 	speed = 300.0f; // pixels per second
     GameObject::bounds.minX = position.X - 10;
 	GameObject::bounds.maxX = position.X + 10;
@@ -39,7 +39,7 @@ void Ball::update(float dt)
 	GameObject::bounds.maxY = position.Y + 10;
 
 	//if ball hits right side
-	if(GameObject::bounds.maxX >= 600)
+	if(GameObject::bounds.maxX >= 1920)
 	{
 		direction.X *= -1;
 	}
@@ -51,7 +51,7 @@ void Ball::update(float dt)
 	}
 
 	//if ball hits the bottom
-	if(GameObject::bounds.maxY >= 600)
+	if(GameObject::bounds.maxY >= 1080)
 	{
 		cout << "Life Lost.." << endl;
 
@@ -59,8 +59,8 @@ void Ball::update(float dt)
 		//speed = 100.0f;
 		direction.X = 1;
 		direction.Y = 1;
-		position.X = 600 * 0.5;
-    	position.Y = 600 * 0.5;
+		position.X = 1920 * 0.5;
+		position.Y = 1080 * 0.5;
 	}
 
 	//if ball hits the top

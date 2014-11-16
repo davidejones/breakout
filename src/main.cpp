@@ -49,8 +49,8 @@ static void show_usage(string name)
 
 void setupLevels()
 {
-	level1.resize( 5 , vector<double>( 7 , 1 ) );
-	level2.resize( 5 , vector<double>( 7 , 1 ) );
+	level1.resize( 5 , vector<double>( 10 , 1 ) );
+	level2.resize( 5 , vector<double>( 10 , 1 ) );
 
 	level2[3] = vector<double>( 7 , 0 );
 
@@ -59,7 +59,7 @@ void setupLevels()
 
 int main(int argc, char *argv[])
 {
-	bool fullwindow = false;
+	bool fullwindow = true;
 	int winw = 0;
 	int winh = 0;
 	bool border = true;

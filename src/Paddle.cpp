@@ -9,8 +9,13 @@ Paddle::Paddle(int w, int h): GameObject() {
 	dy = 0;
 	width = w;
 	height = h;
-	x = 300;
-	y = 600 - h;
+
+	//overwrite here for time being
+	width = 1920/9 * 1;
+	height = 40;
+
+	x = 1920/2;
+	y = 1080 - h;
 	GameObject::bounds.minX = x;
 	GameObject::bounds.maxX = x + width;
 	GameObject::bounds.minY = y;
@@ -51,7 +56,7 @@ void Paddle::update(float dt)
 			GameObject::bounds.maxX = x + width;
 		}
 	} else if(right) {
-		if(x < 600 - width)
+		if(x < 1920 - width)
 		{
 			vel += 1;
 			if(vel >= maxspeed) {
@@ -64,9 +69,9 @@ void Paddle::update(float dt)
 		}
 	} else {
 
-		if(x >= 600 - width)
+		if(x >= 1920 - width)
 		{
-			x = 600 - width;
+			x = 1920 - width;
 		}
 
 		if(x < 0)

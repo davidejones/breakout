@@ -18,6 +18,17 @@ void Wall::setLevel(vector< vector<double> > level)
 	int rowindex = 0;
 	int colindex = 0;
 	bool vis = true;
+	int rowcount = 0;
+	int colcount = 0;
+	int bwidth = 0;
+	int bheight = 0;
+	int brickpadx = 10;
+	int brickpady = 5;
+
+	rowcount = level.size();
+	colcount = level[0].size();
+	bwidth = (1920 / colcount) - brickpadx;
+	bheight = (200 / rowcount) - brickpady;
 
 	vector< vector<double> >::const_iterator row;
 	vector<double>::const_iterator col;
@@ -33,7 +44,7 @@ void Wall::setLevel(vector< vector<double> > level)
 		for (col = row->begin(); col != row->end(); ++col) 
 		{
 			vis = *col;
-			brick_vector.push_back(Brick(80,20,85 * colindex, 25 * rowindex, color, vis));
+			brick_vector.push_back(Brick(bwidth,bheight,(bwidth + brickpadx) * colindex, (bheight + brickpady) * rowindex, color, vis));
 			++colindex;
 			vis = true;
 		}
