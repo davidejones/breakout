@@ -1,6 +1,8 @@
 #include "GameWindow.h"
 
-GameWindow::GameWindow()
+using namespace std;
+
+GameWindow::GameWindow(int w, int h, bool fullscreen, bool border)
 {
     /* Initialize the library */
     glfwInit();
@@ -11,8 +13,22 @@ GameWindow::GameWindow()
     _window = glfwCreateWindow(mode->width, mode->height, "Breakout", NULL, NULL);
     */
 
+    if(w == 0 && h == 0)
+    {
+    	const GLFWvidmode * mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+    	width = mode->width;
+    	height = mode->height;
+    } else {
+		width = w;
+    	height = w;
+    }
+
+    if(!border) {
+    	glfwWindowHint(GLFW_DECORATED, GL_FALSE);
+    }
+
     /* Create a windowed mode window and its OpenGL context */
-    _window = glfwCreateWindow(600, 600, "Breakout", NULL, NULL);
+    _window = glfwCreateWindow(width, height, "Breakout", fullscreen ? glfwGetPrimaryMonitor() : NULL, NULL);   
     if (!_window)
     {
         glfwTerminate();

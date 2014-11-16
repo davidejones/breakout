@@ -6,6 +6,7 @@
 #include "InputHandler.h"
 #include <GLFW/glfw3.h>
 #include <vector>
+#include <string>
 #include <iostream>
 
 void render();
@@ -30,6 +31,22 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 	inputhandler.key_callback(window, key, scancode, action, mods);
 }
 
+static void show_usage(string name)
+{
+    cerr << "Usage: " << name << " <option(s)>" << endl
+              << "Options:\n"
+              << "\t-h,--help\t\tShow this help message\n"
+              << "\t-fullscreen\t\tOpen fullscreen window\n"
+              << "\t-windowed\t\tOpen windowed\n"
+              << "\t-640x480\t\t640x480 resolution in windowed mode\n"
+              << "\t-800x600\t\t800x600 resolution in windowed mode\n"
+              << "\t-1024x768\t\t1024x768 resolution in windowed mode\n"
+              << "\t-1280x720\t\t1280x720 resolution in windowed mode\n"
+              << "\t-1920x1080\t\t1920x1080 resolution in windowed mode\n"
+              << "\t-noborder\t\tborderless window in windowed mode\n"
+              << endl;
+}
+
 void setupLevels()
 {
 	level1.resize( 5 , vector<double>( 7 , 1 ) );
@@ -40,11 +57,61 @@ void setupLevels()
 	wall.setLevel(level1);
 }
 
-int main(void)
+int main(int argc, char *argv[])
 {
+	bool fullwindow = false;
+	int winw = 0;
+	int winh = 0;
+	bool border = true;
+
+	if(argc > 1)
+	{
+		for (int i = 0; i < argc; ++i)
+		{
+			string arg = argv[i];
+			if ((arg == "-h") || (arg == "--help")) {
+            	show_usage(argv[0]);
+            	return 0;
+	        } else if (arg == "-fullscreen") {
+	        	//do code to make fullscreen window
+	        	fullwindow = true;
+			} else if (arg == "-windowed") {
+				//do code to make windowed
+				fullwindow = false;
+				//loop over all args again and check for windowed resolutions
+				for (int j = 0; j < argc; ++j)
+				{
+					string resarg = argv[j];
+
+					if(resarg == "-noborder")
+					{
+						border=false;
+					}
+
+					if(resarg == "-640x480") {
+						winw = 640;
+						winh = 480;
+					} else if(resarg == "-800x600") {
+						winw = 800;
+						winh = 600;
+					} else if(resarg == "-1024x768") {
+						winw = 1024;
+						winh = 768;
+					} else if(resarg == "-1280x720") {
+						winw = 1280;
+						winh = 720;
+					} else if(resarg == "-1920x1080") {
+						winw = 1920;
+						winh = 1080;
+					}
+				}
+			}
+		} 
+	}
+
 	setupLevels();
 
-	gameWindow = new GameWindow();
+	gameWindow = new GameWindow(winw, winh, fullwindow, border);
 	gameWindow->setKeyCallback(key_callback);
 
 	//add paddle to input handler so we can react on control input

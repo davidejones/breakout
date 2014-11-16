@@ -12,7 +12,7 @@ public:
 	void setKeyCallback(GLFWkeyfun key_callback);
 	void projection();
 
-	GameWindow();
+	GameWindow(int w, int h, bool fullscreen=true, bool border=true);
 
 	void render();
 	void update(float dt);
