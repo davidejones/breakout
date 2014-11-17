@@ -2,6 +2,7 @@
 #include "Ball.h"
 #include "Paddle.h"
 #include "Wall.h"
+#include "Background.h"
 #include "Collision.h"
 #include "InputHandler.h"
 #include <GLFW/glfw3.h>
@@ -24,6 +25,7 @@ Paddle paddle(90,10);
 vector< vector<double> > level1;
 vector< vector<double> > level2;
 Wall wall;
+Background bg;
 InputHandler inputhandler;
 
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -142,6 +144,7 @@ void render()
 {
 	gameWindow->clear();
 	
+	bg.render();
 	ball.render();
 	paddle.render();
 	wall.render();
@@ -166,7 +169,7 @@ void update(float dt)
 		ball.update(iterationDelta);
 		checkCollisions();
 	}
-
+	bg.update(dt);
 	paddle.update(dt);
 	wall.update(dt);
 

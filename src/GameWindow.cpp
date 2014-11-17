@@ -21,7 +21,7 @@ GameWindow::GameWindow(int w, int h, bool fullscreen, bool border)
     	height = mode->height;
     } else {
 		width = w;
-    	height = w;
+    	height = h;
     }
 
     if(!border) {
@@ -38,7 +38,14 @@ GameWindow::GameWindow(int w, int h, bool fullscreen, bool border)
         glfwTerminate();
     }
 
-    glfwSetWindowPos(_window, (mode->width * 0.5) - (width * 0.5) , (mode->height * 0.5) - (height * 0.5) );
+    //glfwSetWindowPos(_window, (mode->width * 0.5) - (width * 0.5) , (mode->height * 0.5) - (height * 0.5) );
+
+
+    int widthMM, heightMM;
+    glfwGetMonitorPhysicalSize(glfwGetPrimaryMonitor(), &widthMM, &heightMM);
+    const double dpi = mode->width / (widthMM / 25.4);
+    const char* name = glfwGetMonitorName(glfwGetPrimaryMonitor());
+    cout << name << " - " << dpi << "dpi" << endl;
 
     /* Make the window's context current */
 	glfwMakeContextCurrent(_window);
@@ -56,6 +63,7 @@ void GameWindow::projection()
     float targetAspectRatio = virtual_width/virtual_height;
      
     // figure out the largest area that fits in this resolution at the desired aspect ratio
+    /*
     int myw = width ;
     int myh = (int)(myw / targetAspectRatio + 0.5f);
      
@@ -65,7 +73,12 @@ void GameWindow::projection()
         myh = height ;
         myw = (int)(myh * targetAspectRatio + 0.5f);
     }
-     
+    */
+
+    //as we are using 16:9 we want to always match width first over height
+    int myw = width;
+    int myh = (virtual_height * height) / virtual_width;
+
     // set up the new viewport centered in the backbuffer
     int vp_x = (width  / 2) - (myw / 2);
     int vp_y = (height / 2) - (myh/ 2);
@@ -78,7 +91,7 @@ void GameWindow::projection()
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	//glOrtho(0.0, 600, 600, 0.0, -1.0, 1.0);
-	glOrtho(0.0, width, height, 0.0, -1.0, 1.0);
+	glOrtho(0.0, (float)width, (float)height, 0.0, -1.0, 1.0);
 	//glOrtho(-_ratio, _ratio, -1.f, 1.f, 1.f, -1.f);
 	glMatrixMode(GL_MODELVIEW); 
 	glLoadIdentity();

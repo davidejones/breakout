@@ -22,7 +22,8 @@ void Ball::render()
 	glPushMatrix();
 	glTranslated(position.X, position.Y, 0);
 	//filledCircle();
-	drawCircle(-1, 0, 10, 20);
+	//overwrite here for time being
+	drawCircle(-1, 0, 1920/100 * 1, 20);
 	glPopMatrix();
 }
 

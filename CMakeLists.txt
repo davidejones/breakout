@@ -41,7 +41,7 @@ include_directories(deps/glfw/include)
 
 # Add a target executable
 add_executable(${PROJ_NAME}
-  src/main.cpp src/GameWindow.cpp src/Triangle.cpp src/Ball.cpp src/Paddle.cpp src/Brick.cpp src/BoundingBox.cpp src/Vector2.cpp src/Wall.cpp src/Collision.cpp src/Subject.cpp src/InputHandler.cpp
+  src/main.cpp src/GameWindow.cpp src/Triangle.cpp src/Ball.cpp src/Paddle.cpp src/Brick.cpp src/BoundingBox.cpp src/Vector2.cpp src/Wall.cpp src/Collision.cpp src/Subject.cpp src/InputHandler.cpp src/Background.cpp
 )
 
 # link glfw3 libraries
