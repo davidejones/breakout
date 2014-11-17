@@ -16,6 +16,7 @@ private:
 	Vector2 direction, position;
 	int maxSpeed, speedIncrement, iterationsPerFrame;
 	float speed;
+	int ballwidth;
 	void drawCircle(float cx, float cy, float r, int num_segments);
 public:
 	//BoundingBox bounds;

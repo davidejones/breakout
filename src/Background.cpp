@@ -9,8 +9,8 @@ Background::Background()
 
 void Background::render()
 {
-	int width = 1920;
-	int height = 1080;
+	int width = 2048;
+	int height = 1536;
 
 	glBegin(GL_QUADS);
 		glColor3f(0.114f, 0.114f, 0.114f); //1d1d1d

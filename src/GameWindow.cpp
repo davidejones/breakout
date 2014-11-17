@@ -38,14 +38,14 @@ GameWindow::GameWindow(int w, int h, bool fullscreen, bool border)
         glfwTerminate();
     }
 
-    //glfwSetWindowPos(_window, (mode->width * 0.5) - (width * 0.5) , (mode->height * 0.5) - (height * 0.5) );
+    glfwSetWindowPos(_window, (mode->width/2) - (width/2) , (mode->height/2) - (height/2) );
 
 
-    int widthMM, heightMM;
-    glfwGetMonitorPhysicalSize(glfwGetPrimaryMonitor(), &widthMM, &heightMM);
-    const double dpi = mode->width / (widthMM / 25.4);
-    const char* name = glfwGetMonitorName(glfwGetPrimaryMonitor());
-    cout << name << " - " << dpi << "dpi" << endl;
+    //int widthMM, heightMM;
+    //glfwGetMonitorPhysicalSize(glfwGetPrimaryMonitor(), &widthMM, &heightMM);
+    //const double dpi = mode->width / (widthMM / 25.4);
+    //const char* name = glfwGetMonitorName(glfwGetPrimaryMonitor());
+    //cout << name << " - " << dpi << "dpi" << endl;
 
     /* Make the window's context current */
 	glfwMakeContextCurrent(_window);
@@ -57,8 +57,8 @@ void GameWindow::projection()
 	_ratio = width / (float) height;
 
     // This is your target virtual resolution for the game, the size you built your game to
-    int virtual_width=1920;
-    int virtual_height=1080;
+    int virtual_width=2048;
+    int virtual_height=1536;
      
     float targetAspectRatio = virtual_width/virtual_height;
      
@@ -75,9 +75,28 @@ void GameWindow::projection()
     }
     */
 
+    int myw = 0;
+    int myh = 0;
+
+    // So then if the image is wider rather than taller, set the width and figure out the height
+    if ((width/height) > (virtual_width/virtual_height)) {
+        myw = width;
+        myh = (virtual_width * height) / width;
+    } else if ((width/height) < (virtual_width/virtual_height)) {
+        // And if the image is taller rather than wider, then set the height and figure out the width
+        myw = (virtual_height * width)/ height;
+        myh = height;
+    } else if ((width/height) == (virtual_width/virtual_height)) {
+        // And because it is entirely possible that the image could be the exact same size/aspect ratio of the desired area, so we have that covered as well
+        myw = width;
+        myh = height;
+    }
+
     //as we are using 16:9 we want to always match width first over height
+    /*
     int myw = width;
     int myh = (virtual_height * height) / virtual_width;
+    */
 
     // set up the new viewport centered in the backbuffer
     int vp_x = (width  / 2) - (myw / 2);

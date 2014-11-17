@@ -23,12 +23,12 @@ void Wall::setLevel(vector< vector<double> > level)
 	int bwidth = 0;
 	int bheight = 0;
 	int brickpadx = 10;
-	int brickpady = 5;
+	int brickpady = 10;
 
 	rowcount = level.size();
 	colcount = level[0].size();
-	bwidth = (1920 / colcount) - brickpadx;
-	bheight = (200 / rowcount) - brickpady;
+	bwidth = (2048 / colcount) - brickpadx;
+	bheight = ( (1536/6) / rowcount) - brickpady;
 
 	vector< vector<double> >::const_iterator row;
 	vector<double>::const_iterator col;
