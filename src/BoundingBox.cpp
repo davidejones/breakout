@@ -4,7 +4,7 @@ BoundingBox::BoundingBox(void)
 {
 }
 
-BoundingBox::BoundingBox(int left = 0, int right = 0, int top = 0, int bottom = 0)
+BoundingBox::BoundingBox(int left, int right, int top, int bottom)
 {
 	minX = left;
 	maxX = right;

@@ -57,46 +57,29 @@ void GameWindow::projection()
 	_ratio = width / (float) height;
 
     // This is your target virtual resolution for the game, the size you built your game to
+    // this is set to a 4:3 game
     int virtual_width=2048;
     int virtual_height=1536;
-     
-    float targetAspectRatio = virtual_width/virtual_height;
-     
-    // figure out the largest area that fits in this resolution at the desired aspect ratio
-    /*
-    int myw = width ;
-    int myh = (int)(myw / targetAspectRatio + 0.5f);
-     
-    if (myh > height )
-    {
-       //It doesn't fit our height, we must switch to pillarbox then
-        myh = height ;
-        myw = (int)(myh * targetAspectRatio + 0.5f);
-    }
-    */
+    float targetAspectRatio = 1.33333333333;
 
     int myw = 0;
     int myh = 0;
 
-    // So then if the image is wider rather than taller, set the width and figure out the height
-    if ((width/height) > (virtual_width/virtual_height)) {
-        myw = width;
-        myh = (virtual_width * height) / width;
-    } else if ((width/height) < (virtual_width/virtual_height)) {
-        // And if the image is taller rather than wider, then set the height and figure out the width
-        myw = (virtual_height * width)/ height;
-        myh = height;
-    } else if ((width/height) == (virtual_width/virtual_height)) {
-        // And because it is entirely possible that the image could be the exact same size/aspect ratio of the desired area, so we have that covered as well
+    //if target ratio same as window ratio stretch to fit as should be proportional
+    if (((float)width/height) == ((float)virtual_width/virtual_height)) {
         myw = width;
         myh = height;
-    }
+    } else {
+        myw = width;
+        myh = (int)(myw / targetAspectRatio + 0.5f);
 
-    //as we are using 16:9 we want to always match width first over height
-    /*
-    int myw = width;
-    int myh = (virtual_height * height) / virtual_width;
-    */
+        if (myh > height )
+        {
+            //It doesn't fit our height, we must switch to pillarbox then
+            myh = height;
+            myw = (int)(myh * targetAspectRatio + 0.5f);
+        }
+    }
 
     // set up the new viewport centered in the backbuffer
     int vp_x = (width  / 2) - (myw / 2);
