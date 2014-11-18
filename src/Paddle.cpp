@@ -87,6 +87,7 @@ void Paddle::update(float dt)
 
 void Paddle::OnCollisionEnter2D(Collision collision)
 {
+	collision.gameSound->playSoundEffect("paddlehit");
 	//cout << "paddle collision" << endl;
 }
 

@@ -20,10 +20,12 @@ private:
 	void drawCircle(float cx, float cy, float r, int num_segments);
 public:
 	//BoundingBox bounds;
-	Ball();
+	Ball(GameSound* gSnd);
+	GameSound* gameSound;
 	void render();
 	void update(float dt);
 	void OnCollisionEnter2D(Collision collision);
+	void reset();
 };
 
 #endif

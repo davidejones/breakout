@@ -5,6 +5,7 @@
 #include "Background.h"
 #include "Collision.h"
 #include "InputHandler.h"
+#include "GameSound.h"
 #include <GLFW/glfw3.h>
 #include <vector>
 #include <string>
@@ -20,13 +21,18 @@ using namespace std;
 GameWindow *gameWindow;
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
-Ball ball;
 Paddle paddle(90,10);
 vector< vector<double> > level1;
 vector< vector<double> > level2;
+vector< vector<double> > level3;
+vector< vector<double> > level4;
+vector< vector<double> > level5;
 Wall wall;
 Background bg;
 InputHandler inputhandler;
+GameSound gameSound;
+Ball ball(&gameSound);
+int gameovercount = 0;
 
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -52,9 +58,66 @@ static void show_usage(string name)
 void setupLevels()
 {
 	level1.resize( 5 , vector<double>( 10 , 1 ) );
-	level2.resize( 5 , vector<double>( 10 , 1 ) );
+		
+	double l2arr[5][10] = { 
+		{ 0, 0, 0, 1, 1, 1, 1, 0, 0, 0 }, 
+		{ 0, 0, 1, 1, 1, 1, 1, 1, 0, 0 },
+		{ 0, 1, 1, 1, 1, 1, 1, 1, 1, 0 },
+		{ 0, 0, 1, 1, 1, 1, 1, 1, 0, 0 },
+		{ 0, 0, 0, 1, 1, 1, 1, 0, 0, 0 },
+	};
+	for (int i = 0; i < 5; i++){
+        level2.push_back(vector<double>());
+        for(int j = 0; j < 10; j++)
+        {
+        	level2[i].push_back(l2arr[i][j]);
+        }
+    }
 
-	level2[3] = vector<double>( 7 , 0 );
+    double l3arr[5][10] = { 
+		{ 1, 0, 1, 0, 1, 0, 1, 0, 1, 0 }, 
+		{ 1, 0, 1, 0, 1, 0, 1, 0, 1, 0 },
+		{ 1, 0, 1, 0, 1, 0, 1, 0, 1, 0 },
+		{ 1, 0, 1, 0, 1, 0, 1, 0, 1, 0 },
+		{ 1, 0, 1, 0, 1, 0, 1, 0, 1, 0 },
+	};
+	for (int i = 0; i < 5; i++){
+        level3.push_back(vector<double>());
+        for(int j = 0; j < 10; j++)
+        {
+        	level3[i].push_back(l3arr[i][j]);
+        }
+    }
+
+    double l4arr[5][10] = { 
+		{ 1, 1, 0, 0, 1, 1, 0, 0, 1, 1 }, 
+		{ 0, 0, 1, 1, 0, 0, 1, 1, 0, 0 },
+		{ 1, 1, 0, 0, 1, 1, 0, 0, 1, 1 },
+		{ 0, 0, 1, 1, 0, 0, 1, 1, 0, 0 },
+		{ 1, 1, 0, 0, 1, 1, 0, 0, 1, 1 },
+	};
+	for (int i = 0; i < 5; i++){
+        level4.push_back(vector<double>());
+        for(int j = 0; j < 10; j++)
+        {
+        	level4[i].push_back(l4arr[i][j]);
+        }
+    }
+
+    double l5arr[5][10] = { 
+		{ 1, 0, 0, 1, 1, 1, 1, 0, 0, 1 }, 
+		{ 1, 1, 0, 0, 1, 1, 0, 0, 1, 1 }, 
+		{ 1, 1, 1, 0, 1, 1, 0, 1, 1, 1 }, 
+		{ 1, 1, 0, 0, 1, 1, 0, 0, 1, 1 }, 
+		{ 1, 0, 0, 0, 1, 1, 0, 0, 0, 1 }, 
+	};
+	for (int i = 0; i < 5; i++){
+        level5.push_back(vector<double>());
+        for(int j = 0; j < 10; j++)
+        {
+        	level5[i].push_back(l5arr[i][j]);
+        }
+    }
 
 	wall.setLevel(level1);
 }
@@ -134,6 +197,8 @@ int main(int argc, char *argv[])
 		render();
 	}
 
+	gameSound.terminate();
+
 	gameWindow->terminate();
 	delete gameWindow;
 	
@@ -187,10 +252,28 @@ void update(float dt)
 	}
 
 	if(gameover) {
-		wall.setLevel(level2);
+		gameovercount++;
+		gameSound.playSoundEffect("levelcomplete");
+		if(gameovercount == 1)
+		{
+			ball.reset();
+			wall.setLevel(level2);
+		} else if(gameovercount == 2) {
+			ball.reset();
+			wall.setLevel(level3);
+		} else if(gameovercount == 3) {
+			ball.reset();
+			wall.setLevel(level4);
+		} else if(gameovercount == 4) {
+			ball.reset();
+			wall.setLevel(level5);
+			gameovercount = 0;
+		}
 	}
 
 	gameWindow->update(dt);
+
+	gameSound.update();
 }
 
 void checkCollisions()
@@ -201,9 +284,9 @@ void checkCollisions()
 	//if collision is over fire onCollisionExit2D on both
 	if(ball.bounds.checkIntersect(paddle.bounds))
 	{
-		Collision col1(&paddle,"paddle");
+		Collision col1(&paddle,"paddle",&gameSound);
 		ball.OnCollisionEnter2D(col1);
-		Collision col2(&ball,"ball");
+		Collision col2(&ball,"ball",&gameSound);
 		paddle.OnCollisionEnter2D(col2);
 	}
 
@@ -215,8 +298,8 @@ void checkCollisions()
 			{
 				if(ball.bounds.checkIntersect(wall.bricks[i][j].bounds))
 				{
-					Collision col3(&wall.bricks[i][j], "brick");
-					Collision col4(&ball, "ball");
+					Collision col3(&wall.bricks[i][j], "brick",&gameSound);
+					Collision col4(&ball, "ball",&gameSound);
 					ball.OnCollisionEnter2D(col3);
 					wall.bricks[i][j].OnCollisionEnter2D(col4);
 				}

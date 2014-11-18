@@ -2,20 +2,31 @@
 
 using namespace std;
 
-Ball::Ball(): GameObject() {
+Ball::Ball(GameSound* gSnd): GameObject() {
+	this->gameSound = gSnd;
 	speedIncrement = 50;
 	maxSpeed = 1000;
 	direction.X = 1;
 	direction.Y = 1;
 	position.X = 2048 * 0.5;
 	position.Y = 1536 * 0.5;
-	speed = 300.0f; // pixels per second
+	speed = 400.0f; // pixels per second
 	ballwidth = 2048/90;
     GameObject::bounds.minX = position.X - 10;
 	GameObject::bounds.maxX = position.X + 10;
 	GameObject::bounds.minY = position.Y - 10;
 	GameObject::bounds.maxY = position.Y + 10;
 	iterationsPerFrame = 10;
+}
+
+void Ball::reset()
+{
+	//reset variables and ballpos
+	speed = 400.0f;
+	direction.X = 1;
+	direction.Y = 1;
+	position.X = 2048 * 0.5;
+	position.Y = 1536 * 0.5;
 }
 
 void Ball::render()
@@ -42,31 +53,29 @@ void Ball::update(float dt)
 	//if ball hits right side
 	if(GameObject::bounds.maxX >= 2048)
 	{
+		gameSound->playSoundEffect("paddlehit");
 		direction.X *= -1;
 	}
 
 	//if ball hits left side
 	if(GameObject::bounds.minX <= 0)
 	{
+		gameSound->playSoundEffect("paddlehit");
 		direction.X *= -1;
 	}
 
 	//if ball hits the bottom
 	if(GameObject::bounds.maxY >= 1536)
 	{
-		cout << "Life Lost.." << endl;
-
-		//reset variables and ballpos
-		//speed = 100.0f;
-		direction.X = 1;
-		direction.Y = 1;
-		position.X = 2048 * 0.5;
-		position.Y = 1536 * 0.5;
+		//cout << "Life Lost.." << endl;
+		gameSound->playSoundEffect("lostlife");
+		reset();
 	}
 
 	//if ball hits the top
 	if(GameObject::bounds.minY <= 0)
 	{
+		gameSound->playSoundEffect("paddlehit");
 		direction.Y *= -1;
 	}
 
@@ -107,8 +116,8 @@ void Ball::OnCollisionEnter2D(Collision collision)
 	    direction = direction.Normalize();
 
 	    // Increase the speed when the ball is hit
-	    //speed += speedIncrement;
-	    //speed = fmin(speed, maxSpeed);
+	    speed += speedIncrement;
+	    speed = fmin(speed, maxSpeed);
 
 	    //update bounding box
 		GameObject::bounds.minX = position.X - ballwidth;

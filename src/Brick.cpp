@@ -52,5 +52,6 @@ void Brick::OnCollisionEnter2D(Collision collision)
 	if(collision.name == "ball")
 	{
 		visible = false;
+		collision.gameSound->playSoundEffect("brickbreak");
 	}
 }
