@@ -31,6 +31,15 @@ else()
   set(MAKE_SYSTEM_LINUX 1)
 endif()
 
+set(origin "$ORIGIN")
+if (APPLE)
+  set(origin "@loader_path")
+endif()
+
+# http://www.blaenkdenum.com/notes/cmake/
+set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--disable-new-dtags")
+set (CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
+set (CMAKE_INSTALL_RPATH "$ORIGIN")
 
 # find opengl
 find_package(OpenGL REQUIRED)
