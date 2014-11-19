@@ -10,24 +10,24 @@ GameSound::GameSound()
 	result = FMOD::System_Create(&system);
     result = system->init(32, FMOD_INIT_NORMAL, extradriverdata);
 
-    string filename = "../media/background.wav";
+    string filename = "./media/background.wav";
     result = system->createSound(filename.c_str(), FMOD_DEFAULT, 0, &bgsound);
     result = bgsound->setMode(FMOD_LOOP_NORMAL);
     result = system->playSound(bgsound, 0, false, &bgchannel);
 
-    filename = "../media/breakbrick.wav";
+    filename = "./media/breakbrick.wav";
     result = system->createSound(filename.c_str(), FMOD_DEFAULT, 0, &effect1);
     result = effect1->setMode(FMOD_LOOP_OFF);
 
-    filename = "../media/lostlife.wav";
+    filename = "./media/lostlife.wav";
     result = system->createSound(filename.c_str(), FMOD_DEFAULT, 0, &effect2);
     result = effect2->setMode(FMOD_LOOP_OFF);
 
-    filename = "../media/levelcomplete.wav";
+    filename = "./media/levelcomplete.wav";
     result = system->createSound(filename.c_str(), FMOD_DEFAULT, 0, &effect3);
     result = effect3->setMode(FMOD_LOOP_OFF);
 
-    filename = "../media/paddlehit.wav";
+    filename = "./media/paddlehit.wav";
     result = system->createSound(filename.c_str(), FMOD_DEFAULT, 0, &effect4);
     result = effect4->setMode(FMOD_LOOP_OFF);
 }

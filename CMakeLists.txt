@@ -39,7 +39,7 @@ endif()
 # http://www.blaenkdenum.com/notes/cmake/
 set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--disable-new-dtags")
 set (CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
-set (CMAKE_INSTALL_RPATH "$ORIGIN")
+set (CMAKE_INSTALL_RPATH "$ORIGIN/libs")
 
 # find opengl
 find_package(OpenGL REQUIRED)
