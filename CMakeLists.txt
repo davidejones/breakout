@@ -31,19 +31,8 @@ else()
   set(MAKE_SYSTEM_LINUX 1)
 endif()
 
-set(origin "$ORIGIN")
-if (APPLE)
-  set(origin "@loader_path")
-endif()
-
-# http://www.blaenkdenum.com/notes/cmake/
-set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--disable-new-dtags")
-set (CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
-set (CMAKE_INSTALL_RPATH "$ORIGIN/libs")
-
 # find opengl
 find_package(OpenGL REQUIRED)
-#find_package(FMOD REQUIRED)
 
 # add dependencies directory so we build glfw3 from source etc
 add_subdirectory(deps)
@@ -53,9 +42,8 @@ include_directories(${GLFW_SOURCE_DIR})
 # add dependencies headers so we can find them
 include_directories(deps/glfw/include)
 
-#FMOD for 64bit linux
-include_directories(deps/fmod/linux/inc)
-set(FMOD_LIBRARY "${CMAKE_CURRENT_SOURCE_DIR}/deps/fmod/linux/lib/x86_64/libfmod.so")
+#sfml for sound
+include_directories(deps/sfml/include)
 
 # Add a target executable
 add_executable(${PROJ_NAME}
@@ -63,4 +51,4 @@ add_executable(${PROJ_NAME}
 )
 
 # link glfw3 libraries
-target_link_libraries(${PROJ_NAME} glfw ${GLFW_LIBRARIES} ${FMOD_LIBRARY})
+target_link_libraries(${PROJ_NAME} glfw ${GLFW_LIBRARIES} ${FMOD_LIBRARY} sfml-audio)
