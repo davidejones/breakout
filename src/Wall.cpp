@@ -80,3 +80,18 @@ void Wall::update(float dt)
 		}
 	}
 }
+
+void Wall::onNotify(string eventname)
+{
+	if(eventname == "KEY_SPACE_DOWN")
+	{
+		//level complete
+		for (int i = 0; i < bricks.size(); ++i)
+		{
+			for (int j = 0; j < bricks[i].size(); ++j)
+			{
+				bricks[i][j].visible = false;
+			}
+		}
+	}
+}

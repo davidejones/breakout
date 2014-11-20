@@ -30,6 +30,7 @@ GameWindow::GameWindow(int w, int h, bool fullscreen, bool border)
 
     glfwWindowHint(GLFW_SAMPLES, 0);
     //glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
+    //glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4);
 
     /* Create a windowed mode window and its OpenGL context */
     _window = glfwCreateWindow(width, height, "Breakout", fullscreen ? glfwGetPrimaryMonitor() : NULL, NULL);   

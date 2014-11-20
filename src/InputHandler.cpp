@@ -4,7 +4,7 @@ using namespace std;
 
 InputHandler::InputHandler()
 {
-	
+	wireframe = false;
 }
 
 void InputHandler::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -21,6 +21,15 @@ void InputHandler::key_callback(GLFWwindow* window, int key, int scancode, int a
 	    if(key == GLFW_KEY_D || key == GLFW_KEY_RIGHT)
 	    {
 	    	Subject::notify("KEY_RIGHT_DOWN");
+	    }
+	    if(key == GLFW_KEY_SPACE)
+	    {
+	    	Subject::notify("KEY_SPACE_DOWN");
+	    }
+	    if(key == GLFW_KEY_TAB)
+	    {
+	    	wireframe = !wireframe;
+	    	glPolygonMode( GL_FRONT_AND_BACK, wireframe ? GL_LINE : GL_FILL );
 	    }
 	} else if(action == GLFW_RELEASE) {
 		if(key == GLFW_KEY_A || key == GLFW_KEY_LEFT )

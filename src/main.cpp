@@ -181,7 +181,9 @@ int main(int argc, char *argv[])
 
 	//add paddle to input handler so we can react on control input
 	Observer* padobserver = &paddle;
+	Observer* wallobserver = &wall;
 	inputhandler.addObserver(padobserver);
+	inputhandler.addObserver(wallobserver);
 
 	/* Loop until the user closes the window */
 	while (!gameWindow->windowShouldClose())
@@ -252,22 +254,28 @@ void update(float dt)
 	}
 
 	if(gameover) {
-		gameovercount++;
 		gameSound.playSoundEffect("levelcomplete");
-		if(gameovercount == 1)
+		if(gameovercount == 0)
 		{
 			ball.reset();
 			wall.setLevel(level2);
-		} else if(gameovercount == 2) {
+			gameovercount++;
+		} else if(gameovercount == 1) {
 			ball.reset();
 			wall.setLevel(level3);
-		} else if(gameovercount == 3) {
+			gameovercount++;
+		} else if(gameovercount == 2) {
 			ball.reset();
 			wall.setLevel(level4);
-		} else if(gameovercount == 4) {
+			gameovercount++;
+		} else if(gameovercount == 3) {
 			ball.reset();
 			wall.setLevel(level5);
-			gameovercount = 0;
+			gameovercount++;
+		} else if(gameovercount == 4) {
+			ball.reset();
+			wall.setLevel(level1);
+			gameovercount=0;
 		}
 	}
 

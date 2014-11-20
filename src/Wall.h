@@ -3,11 +3,13 @@
 
 #include "Brick.h"
 #include "BoundingBox.h"
+#include "Observer.h"
 #include <GLFW/glfw3.h>
 #include <vector>
 #include <iostream>
+#include <string>
 
-class Wall
+class Wall: public Observer
 {
 private:
 	int rows, cols;
@@ -18,6 +20,7 @@ public:
 	void render();
 	void update(float dt);
 	void setLevel(std::vector< std::vector<double> > level);
+	void onNotify(std::string eventname);
 };
 
 #endif

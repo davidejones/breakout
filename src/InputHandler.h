@@ -12,6 +12,7 @@ private:
 	int numbuttons;
 	const float* axes;
 	int numaxes;
+	bool wireframe;
 public:
 	InputHandler();
 	void checkInput();
