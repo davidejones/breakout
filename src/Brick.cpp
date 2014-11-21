@@ -36,7 +36,7 @@ void Brick::render()
 	}
 }
 
-void Brick::update(float dt)
+void Brick::update()
 {
 	if(visible)
 	{

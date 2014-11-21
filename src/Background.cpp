@@ -21,7 +21,7 @@ void Background::render()
 	glEnd();
 }
 
-void Background::update(float dt)
+void Background::update()
 {
 
 }

@@ -52,3 +52,9 @@ add_executable(${PROJ_NAME}
 
 # link glfw3 libraries
 target_link_libraries(${PROJ_NAME} glfw ${GLFW_LIBRARIES} ${FMOD_LIBRARY} sfml-audio)
+
+
+set_target_properties( ${PROJ_NAME} PROPERTIES
+  RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_SOURCE_DIR}/bin 
+  RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_SOURCE_DIR}/bin
+)

@@ -14,18 +14,19 @@ class Ball: public GameObject
 {
 private:
 	Vector2 direction, position;
-	int maxSpeed, speedIncrement, iterationsPerFrame;
-	float speed;
-	int ballwidth;
+	int maxSpeed, speedIncrement, speed, ballwidth, fadecount;
+	float alpha;
+	bool doFading, fadeIn, fadeOut;
 	void drawCircle(float cx, float cy, float r, int num_segments);
 public:
 	//BoundingBox bounds;
 	Ball(GameSound* gSnd);
 	GameSound* gameSound;
 	void render();
-	void update(float dt);
+	void update();
 	void OnCollisionEnter2D(Collision collision);
 	void reset();
+	void waitMode();
 };
 
 #endif

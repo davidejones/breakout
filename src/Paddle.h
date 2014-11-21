@@ -21,7 +21,7 @@ public:
 	//BoundingBox bounds;
 	Paddle(int w, int h);
 	void render();
-	void update(float dt);
+	void update();
 	void checkCollisions(Ball &ball);
 	void OnCollisionEnter2D(Collision collision);
 	void onNotify(std::string eventname);

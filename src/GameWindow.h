@@ -15,7 +15,7 @@ public:
 	GameWindow(int w, int h, bool fullscreen=true, bool border=true);
 
 	void render();
-	void update(float dt);
+	void update();
 	void terminate();
 	void clear();
 };

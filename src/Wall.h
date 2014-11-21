@@ -18,7 +18,7 @@ public:
 	Wall();
 	Wall(std::vector< std::vector<double> > level);
 	void render();
-	void update(float dt);
+	void update();
 	void setLevel(std::vector< std::vector<double> > level);
 	void onNotify(std::string eventname);
 };

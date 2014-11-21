@@ -44,7 +44,7 @@ void Wall::setLevel(vector< vector<double> > level)
 		for (col = row->begin(); col != row->end(); ++col) 
 		{
 			vis = *col;
-			brick_vector.push_back(Brick(bwidth,bheight,(bwidth + brickpadx) * colindex, (bheight + brickpady) * rowindex, color, vis));
+			brick_vector.push_back(Brick(bwidth,bheight,(bwidth + brickpadx) * colindex + brickpadx, (bheight + brickpady) * rowindex + brickpady, color, vis));
 			++colindex;
 			vis = true;
 		}
@@ -67,7 +67,7 @@ void Wall::render()
 	}
 }
 
-void Wall::update(float dt)
+void Wall::update()
 {
 	for (int i = 0; i < bricks.size(); ++i)
 	{
@@ -75,7 +75,7 @@ void Wall::update(float dt)
 		{
 			if(bricks[i][j].visible)
 			{
-				bricks[i][j].update(dt);
+				bricks[i][j].update();
 			}
 		}
 	}

@@ -6,5 +6,5 @@ class Background
 public:
 	Background();
 	void render();
-	void update(float dt);
+	void update();
 };

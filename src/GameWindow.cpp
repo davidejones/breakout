@@ -50,6 +50,9 @@ GameWindow::GameWindow(int w, int h, bool fullscreen, bool border)
 
     /* Make the window's context current */
 	glfwMakeContextCurrent(_window);
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void GameWindow::projection()
@@ -122,7 +125,7 @@ void GameWindow::render()
     glfwPollEvents();
 }
 
-void GameWindow::update(float dt)
+void GameWindow::update()
 {
 	
 }

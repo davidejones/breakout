@@ -41,13 +41,13 @@ void Paddle::render()
 	glPopMatrix();
 }
 
-void Paddle::update(float dt)
+void Paddle::update()
 {
 	if(left)
 	{
 		if(x > 0)
 		{
-			vel += 1;
+			vel += 0.05;
 			if(vel >= maxspeed) {
 				vel = maxspeed;
 			}
@@ -58,7 +58,7 @@ void Paddle::update(float dt)
 	} else if(right) {
 		if(x < 2048 - width)
 		{
-			vel += 1;
+			vel += 0.05;
 			if(vel >= maxspeed) {
 				vel = maxspeed;
 			}

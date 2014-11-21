@@ -17,7 +17,7 @@ public:
 	//BoundingBox bounds;
 	Brick(int w, int h, int xpos, int ypos, unsigned int color, bool visibility);
 	void render();
-	void update(float dt);
+	void update();
 	void OnCollisionEnter2D(Collision collision);
 };
 

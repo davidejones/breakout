@@ -40,6 +40,15 @@ void InputHandler::key_callback(GLFWwindow* window, int key, int scancode, int a
 	    {
 	    	Subject::notify("KEY_RIGHT_UP");
 	    }
+	} else if(action == GLFW_REPEAT) {
+		if(key == GLFW_KEY_A || key == GLFW_KEY_LEFT )
+		{
+			Subject::notify("KEY_LEFT_DOWN");
+		}
+	    if(key == GLFW_KEY_D || key == GLFW_KEY_RIGHT)
+	    {
+	    	Subject::notify("KEY_RIGHT_DOWN");
+	    }
 	}
 }
 

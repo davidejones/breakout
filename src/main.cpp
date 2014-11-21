@@ -11,8 +11,32 @@
 #include <string>
 #include <iostream>
 
+#if defined(__linux__)
+#include <sys/time.h>
+unsigned GetTickCount()
+{
+    struct timeval tv;
+    if(gettimeofday(&tv, NULL) != 0)
+            return 0;
+
+    return (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
+}
+#endif
+
+#if defined(__APPLE__) && defined(__MACH__)
+#include <CoreServices/CoreServices.h>
+unsigned GetTickCount()
+{
+	return TickCount();
+}
+#endif
+
+#if defined(_WIN64) || defined(_WIN32)
+#include <windows.h>
+#endif
+
 void render();
-void update(float dt);
+void update();
 void checkCollisions();
 void drawBoundBoxes();
 
@@ -185,17 +209,25 @@ int main(int argc, char *argv[])
 	inputhandler.addObserver(padobserver);
 	inputhandler.addObserver(wallobserver);
 
+	const int TICKS_PER_SECOND = 50;
+    const int SKIP_TICKS = 1000 / TICKS_PER_SECOND;
+    const int MAX_FRAMESKIP = 10;
+    
+    float next_game_tick = GetTickCount();
+    int loops;
+
 	/* Loop until the user closes the window */
 	while (!gameWindow->windowShouldClose())
 	{
-		// Set frame time
-		float currentFrame = glfwGetTime();
-		deltaTime = currentFrame - lastFrame;
-		lastFrame = currentFrame;
-
 		gameWindow->projection();
+		
+		loops = 0;
+        while( GetTickCount() > next_game_tick && loops < MAX_FRAMESKIP) {
+            update();
+            next_game_tick += SKIP_TICKS;
+            loops++;
+        }
 
-		update(deltaTime);
 		render();
 	}
 
@@ -221,24 +253,16 @@ void render()
 	gameWindow->render();
 }
 
-void update(float dt)
+void update()
 {
 	// checking inputs and fire events
 	inputhandler.checkInput();
 
+	ball.update();
+	bg.update();
+	paddle.update();
+	wall.update();
 	checkCollisions();
-
-	int iterationsPerFrame = 20;
-	float iterationDelta = dt/iterationsPerFrame;
-
-	for (int i = 0; i < iterationsPerFrame; ++i)
-	{
-		ball.update(iterationDelta);
-		checkCollisions();
-	}
-	bg.update(dt);
-	paddle.update(dt);
-	wall.update(dt);
 
 	//check if game is over	
 	bool gameover = true;
@@ -279,8 +303,7 @@ void update(float dt)
 		}
 	}
 
-	gameWindow->update(dt);
-
+	gameWindow->update();
 	gameSound.update();
 }
 
@@ -298,11 +321,12 @@ void checkCollisions()
 		paddle.OnCollisionEnter2D(col2);
 	}
 
+	bool brickcollision = false;
 	for (int i = 0; i < wall.bricks.size(); ++i)
 	{
 		for (int j = 0; j < wall.bricks[i].size(); ++j)
 		{
-			if(wall.bricks[i][j].visible)
+			if(wall.bricks[i][j].visible && !brickcollision)
 			{
 				if(ball.bounds.checkIntersect(wall.bricks[i][j].bounds))
 				{
@@ -310,10 +334,12 @@ void checkCollisions()
 					Collision col4(&ball, "ball",&gameSound);
 					ball.OnCollisionEnter2D(col3);
 					wall.bricks[i][j].OnCollisionEnter2D(col4);
+					brickcollision = true;
 				}
 			}
 		}
 	}
+	brickcollision = false;
 }
 
 void drawBoundBoxes()
