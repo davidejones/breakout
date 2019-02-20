@@ -6,7 +6,7 @@
 ## Running the game
 
 **Command line options**
-```
+```bash
 Usage: breakout.exe <option(s)>
 Options:
         -h,--help               Show this help message
@@ -18,7 +18,7 @@ Options:
         -1280x720               1280x720 resolution in windowed mode
         -1920x1080              1920x1080 resolution in windowed mode
         -noborder               borderless window in windowed mode
-
+```
 
 ## Compile from source
 
