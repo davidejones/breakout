@@ -3,17 +3,24 @@
 
 [![screenshot](https://raw.githubusercontent.com/davidejones/breakout/master/screen.png)](https://github.com/davidejones/breakout)
 
-My breakout game  
+## Running the game
 
-Command line options  
--fullscreen  
--windowed  
--640x480  
--800x600  
--1024x768  
--1280x720  
--1920x1080  
--noborder  
+**Command line options**
+```
+Usage: breakout.exe <option(s)>
+Options:
+        -h,--help               Show this help message
+        -fullscreen             Open fullscreen window
+        -windowed               Open windowed
+        -640x480                640x480 resolution in windowed mode
+        -800x600                800x600 resolution in windowed mode
+        -1024x768               1024x768 resolution in windowed mode
+        -1280x720               1280x720 resolution in windowed mode
+        -1920x1080              1920x1080 resolution in windowed mode
+        -noborder               borderless window in windowed mode
+
+
+## Compile from source
 
 ### Compile on linux using g++
 git clone  
