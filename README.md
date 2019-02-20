@@ -1,6 +1,8 @@
 ﻿breakout
 ========
 
+[![screenshot](https://raw.githubusercontent.com/davidejones/breakout/master/screen.png)](https://github.com/davidejones/breakout)
+
 My breakout game  
 
 Command line options  
